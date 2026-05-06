@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendário Social Media — Maio 2026 · Volume 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0a0f;
+  --surface:#16111c;
+  --surface2:#1e1728;
+  --surface3:#261e33;
+  --rosa:#e8608a;
+  --rosa-soft:#c44a72;
+  --rosa-glow:rgba(232,96,138,.18);
+  --azul:#6ea8f0;
+  --azul-soft:#4a7dd4;
+  --azul-glow:rgba(110,168,240,.14);
+  --text:#f0eaf5;
+  --muted:#8a7a9a;
+  --border:#2e2340;
+  --border2:#3d2f52;
+  --r:10px;
+  --r-lg:16px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 10% 0%,rgba(232,96,138,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 35% at 90% 100%,rgba(110,168,240,.06) 0%,transparent 60%);
+}
+.page{max-width:1140px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+
+/* HEADER */
+.header{margin-bottom:2.5rem;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1.5rem}
+.header-left h1{
+  font-family:'Playfair Display',serif;
+  font-size:2.4rem;font-weight:400;line-height:1.15;
+  background:linear-gradient(135deg,var(--rosa) 0%,var(--azul) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.header-left h1 em{font-style:italic}
+.header-left p{color:var(--muted);font-size:13px;margin-top:6px;font-weight:300;letter-spacing:.02em}
+.header-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.pill{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:5px 12px;border-radius:20px}
+.pill-r{background:var(--rosa-glow);color:var(--rosa);border:1px solid rgba(232,96,138,.3)}
+.pill-b{background:var(--azul-glow);color:var(--azul);border:1px solid rgba(110,168,240,.3)}
+
+/* LEGENDA */
+.legend{display:flex;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.6rem 1rem;width:fit-content;margin-bottom:1.5rem;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted);font-weight:400}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ld-p{background:var(--border2);border:1px solid var(--muted)}
+.ld-s{background:#f59e0b}
+.ld-d{background:#34d399}
+.ld-n{background:#6b21a8;border:1px solid #a855f7}
+
+/* CALENDÁRIO */
+.cal-container{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.cal-weekrow{display:grid;grid-template-columns:repeat(7,1fr);background:var(--surface2);border-bottom:1px solid var(--border)}
+.cal-weekrow span{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;padding:10px 4px}
+.cal-weekrow span.wkend{color:var(--border2)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr)}
+
+.cell{
+  border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+  height:120px;display:flex;flex-direction:column;
+  padding:10px 9px 8px;position:relative;
+  transition:background .15s;overflow:hidden;
+}
+.cell:nth-child(7n){border-right:none}
+.cell.clickable{cursor:pointer}
+.cell.clickable:hover{background:rgba(232,96,138,.04)}
+.cell.clickable:hover .cell-theme{color:var(--rosa)}
+.cell.empty-cell{background:transparent;border-color:rgba(46,35,64,.4);cursor:default}
+.cell.fds-cell{background:rgba(0,0,0,.2);cursor:default}
+
+.cell-num{font-size:12px;font-weight:500;color:var(--muted);line-height:1;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.st-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.st-p{background:var(--border2);border:1px solid var(--muted)}
+.st-s{background:#f59e0b}
+.st-d{background:#34d399}
+.st-n{background:#6b21a8;border:1px solid #a855f7}
+
+.badge{font-size:8px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 6px;border-radius:20px;display:inline-block;width:fit-content;margin-bottom:5px;flex-shrink:0}
+.badge-c{background:rgba(232,96,138,.15);color:var(--rosa);border:1px solid rgba(232,96,138,.25)}
+.badge-v{background:rgba(110,168,240,.15);color:var(--azul);border:1px solid rgba(110,168,240,.25)}
+
+.cell-theme{font-size:11px;font-weight:400;color:var(--text);line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:color .15s;flex:1}
+.cell-empty-label{font-size:10px;font-weight:400;color:var(--border2);font-style:italic;margin-top:auto}
+.cell-fds-label{font-size:10px;font-weight:400;color:var(--border2);font-style:italic;margin-top:8px}
+.cell-bar{position:absolute;bottom:0;left:0;right:0;height:2px;transition:opacity .2s;opacity:0}
+.cell.st-s-cell .cell-bar{background:linear-gradient(90deg,#f59e0b,#fbbf24);opacity:1}
+.cell.st-d-cell .cell-bar{background:linear-gradient(90deg,#34d399,#6ee7b7);opacity:1}
+.cell.st-n-cell .cell-bar{background:linear-gradient(90deg,#6b21a8,#a855f7);opacity:1}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(5,3,8,.75);z-index:300;align-items:center;justify-content:center;padding:1.5rem 1rem;backdrop-filter:blur(6px)}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-lg);width:min(780px,100%);max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(232,96,138,.1)}
+.modal-top{flex-shrink:0;background:linear-gradient(135deg,rgba(232,96,138,.12) 0%,rgba(110,168,240,.08) 100%);border-bottom:1px solid var(--border);padding:1.4rem 1.5rem 1.2rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:400;color:var(--text);line-height:1.35}
+.modal-meta{font-size:11px;color:var(--muted);margin-top:4px;font-weight:300}
+.close-btn{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:11px;color:var(--muted);font-family:'Outfit',sans-serif;font-weight:500;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.close-btn:hover{border-color:var(--rosa);color:var(--rosa)}
+
+.modal-status{flex-shrink:0;padding:.75rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(0,0,0,.15)}
+.modal-status span{font-size:11px;color:var(--muted);font-weight:500}
+.sbtn{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:none;color:var(--muted);font-family:'Outfit',sans-serif;transition:all .15s}
+.sbtn:hover{border-color:var(--text);color:var(--text)}
+.sbtn.sp{background:rgba(255,255,255,.06);color:var(--text);border-color:var(--muted)}
+.sbtn.ss{background:rgba(245,158,11,.12);color:#f59e0b;border-color:#f59e0b}
+.sbtn.sd{background:rgba(52,211,153,.12);color:#34d399;border-color:#34d399}
+.sbtn.sn{background:rgba(107,33,168,.15);color:#c084fc;border-color:#6b21a8}
+
+.modal-tabs{flex-shrink:0;padding:.65rem 1.5rem;border-bottom:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;background:rgba(0,0,0,.1)}
+.tab{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.03em;cursor:pointer;border:1px solid transparent;background:none;color:var(--muted);font-family:'Outfit',sans-serif;transition:all .15s}
+.tab:hover{color:var(--text)}
+.tab.active{background:linear-gradient(135deg,var(--rosa-soft),var(--azul-soft));color:#fff;border-color:transparent}
+
+.modal-body{overflow-y:auto;padding:1.4rem 1.5rem;flex:1}
+.modal-body::-webkit-scrollbar{width:4px}
+.modal-body::-webkit-scrollbar-track{background:transparent}
+.modal-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* BLOCOS INTERNOS */
+.sec{margin-bottom:1.4rem}
+.sec-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rosa);margin-bottom:.55rem}
+.blk{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:.5rem}
+.blk p{font-size:13px;color:var(--text);line-height:1.72;font-weight:300}
+.blk .sub{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.6;font-style:italic}
+.blk-title{font-size:11px;font-weight:600;color:var(--rosa);margin-bottom:.4rem;display:flex;align-items:center;gap:7px}
+.num{background:linear-gradient(135deg,var(--rosa-soft),var(--azul-soft));color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+
+.slide{border:1px solid var(--border);border-radius:var(--r);padding:.7rem .9rem;margin-bottom:.4rem;background:linear-gradient(135deg,rgba(232,96,138,.03),rgba(110,168,240,.03))}
+.slide-lbl{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
+.slide-txt{font-size:13px;color:var(--text);line-height:1.65;font-weight:300}
+.slide-tip{font-size:11px;color:var(--azul);margin-top:4px;line-height:1.5;font-style:italic}
+
+.cta-box{background:linear-gradient(135deg,rgba(232,96,138,.1),rgba(110,168,240,.07));border:1px solid rgba(232,96,138,.25);border-radius:var(--r);padding:.9rem 1rem;margin-top:.3rem}
+.cta-lbl{font-size:9px;font-weight:700;color:var(--rosa);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.cta-box p{font-size:13px;color:var(--text);line-height:1.65;font-weight:300}
+.cta-copy{font-size:12px;font-weight:500;color:var(--azul);background:rgba(110,168,240,.1);border:1px solid rgba(110,168,240,.2);border-radius:6px;padding:7px 10px;margin-top:6px;font-style:italic}
+
+.tip-box{background:rgba(110,168,240,.07);border:1px solid rgba(110,168,240,.2);border-radius:var(--r);padding:.85rem 1rem;margin-top:.5rem}
+.tip-box p{font-size:12px;color:var(--azul);line-height:1.65;font-weight:300}
+.tip-box strong{font-weight:600;color:var(--azul)}
+
+/* Sobre o tema */
+.sobre-intro{background:linear-gradient(135deg,rgba(232,96,138,.08),rgba(110,168,240,.06));border:1px solid var(--border2);border-radius:var(--r);padding:1rem 1.1rem;margin-bottom:.9rem}
+.sobre-intro p{font-size:13px;color:var(--text);line-height:1.72;font-style:italic;font-weight:300}
+.sobre-para{border-left:2px solid var(--rosa);border-radius:0 var(--r) var(--r) 0;background:var(--surface2);padding:.85rem 1rem;margin-bottom:.5rem;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.sobre-titulo{font-size:10px;font-weight:700;color:var(--rosa);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem}
+.sobre-para p{font-size:13px;color:var(--text);line-height:1.72;font-weight:300}
+.sobre-dica{background:rgba(110,168,240,.07);border:1px solid rgba(110,168,240,.2);border-radius:var(--r);padding:.85rem 1rem;margin-top:.3rem}
+.sobre-dica-lbl{font-size:9px;font-weight:700;color:var(--azul);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.sobre-dica p{font-size:13px;color:var(--azul);line-height:1.65;font-weight:300}
+
+/* LEGENDA E HASHTAGS */
+.leg-section{margin-bottom:.6rem}
+.leg-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:.85rem 1rem;font-size:13px;color:var(--text);line-height:1.7;font-family:'Outfit',sans-serif;font-weight:300;resize:vertical;min-height:90px}
+.leg-textarea:focus{outline:none;border-color:var(--rosa)}
+.hash-box{background:rgba(110,168,240,.07);border:1px solid rgba(110,168,240,.2);border-radius:var(--r);padding:.85rem 1rem;margin-top:.5rem}
+.hash-lbl{font-size:9px;font-weight:700;color:var(--azul);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.hash-tags{display:flex;flex-wrap:wrap;gap:6px}
+.hash-tag{font-size:11px;background:rgba(110,168,240,.12);color:var(--azul);border:1px solid rgba(110,168,240,.2);border-radius:20px;padding:3px 10px;font-weight:500}
+
+/* QUALIDADE DE FORMATO */
+.qual-intro{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;margin-bottom:1.1rem}
+.qual-objetivo{font-size:11px;font-weight:700;color:var(--rosa);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.8rem}
+.qual-card{border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.6rem;border:1px solid}
+.qual-card.ruim{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.25)}
+.qual-card.bom{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.25)}
+.qual-card.excelente{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.3)}
+.qual-header{display:flex;align-items:center;gap:8px;margin-bottom:.4rem}
+.qual-badge{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px}
+.qual-badge.ruim{background:rgba(239,68,68,.2);color:#f87171}
+.qual-badge.bom{background:rgba(245,158,11,.2);color:#fbbf24}
+.qual-badge.excelente{background:rgba(52,211,153,.2);color:#34d399}
+.qual-formato{font-size:12px;font-weight:600;color:var(--text)}
+.qual-desc{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300}
+.qual-icon{font-size:16px;flex-shrink:0}
+.qual-fonte{font-size:10px;color:var(--border2);margin-top:1rem;font-style:italic;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <h1>Calendário de Conteúdo<br><em>Maio 2026 · Vol. 2</em></h1>
+      <p>Social Media · TikTok &amp; Instagram · 15 novos conteúdos</p>
+      <div class="header-pills">
+        <span class="pill pill-r">15 conteúdos novos</span>
+        <span class="pill pill-b">Legenda e hashtags incluídas</span>
+        <span class="pill pill-r">Análise de formato por objetivo</span>
+      </div>
+    </div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot ld-p"></div>Não iniciado</div>
+      <div class="leg"><div class="leg-dot ld-s"></div>Iniciado</div>
+      <div class="leg"><div class="leg-dot ld-d"></div>Finalizado</div>
+      <div class="leg"><div class="leg-dot ld-n"></div>Não será publicado</div>
+    </div>
+  </div>
+
+  <div class="cal-container">
+    <div class="cal-weekrow">
+      <span>Segunda</span><span>Terça</span><span>Quarta</span><span>Quinta</span><span>Sexta</span>
+      <span class="wkend">Sáb</span><span class="wkend">Dom</span>
+    </div>
+    <div id="calendar" class="cal-grid"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-top">
+      <div>
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-meta" id="modal-meta"></div>
+      </div>
+      <button class="close-btn" onclick="closeModal()">Fechar</button>
+    </div>
+    <div class="modal-status">
+      <span>Status:</span>
+      <button class="sbtn" id="sbtn-p" onclick="setStatus('p')">Não iniciado</button>
+      <button class="sbtn" id="sbtn-s" onclick="setStatus('s')">Iniciado</button>
+      <button class="sbtn" id="sbtn-d" onclick="setStatus('d')">Finalizado</button>
+      <button class="sbtn" id="sbtn-n" onclick="setStatus('n')">Não será publicado</button>
+    </div>
+    <div class="modal-tabs">
+      <button class="tab active" id="tab-t" onclick="showTab('t')">Sobre o Tema</button>
+      <button class="tab" id="tab-c" onclick="showTab('c')">Carrossel</button>
+      <button class="tab" id="tab-v" onclick="showTab('v')">Vídeo</button>
+      <button class="tab" id="tab-l" onclick="showTab('l')">Legenda e Hashtags</button>
+      <button class="tab" id="tab-q" onclick="showTab('q')">Qualidade do Formato</button>
+    </div>
+    <div class="modal-body">
+      <div id="pane-t"></div>
+      <div id="pane-c" style="display:none"></div>
+      <div id="pane-v" style="display:none"></div>
+      <div id="pane-l" style="display:none"></div>
+      <div id="pane-q" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CONTENT = [
+  {
+    day:1, type:'carrossel',
+    theme:'Quanto tempo leva para um perfil crescer no TikTok? A resposta honesta',
+    sobre:{
+      intro:'Essa é uma das perguntas mais feitas para qualquer social media. Responder com honestidade gera muito mais credibilidade do que prometer resultados rápidos. Esse tema posiciona você como profissional que entende de resultados reais, não de fórmulas mágicas.',
+      paras:[
+        {titulo:'Por que esse tema gera identificação imediata',texto:'Todo empreendedor que tentou crescer nas redes já ficou frustrado com a lentidão dos resultados. Ao nomear essa frustração e explicar o que realmente acontece nos primeiros meses, você cria um conteúdo que as pessoas sentem que foi feito especificamente para elas.'},
+        {titulo:'O que acontece nos primeiros 30 dias',texto:'Nos primeiros 30 dias com estratégia, o perfil começa a ganhar coerência. O algoritmo aprende o que é aquele perfil. O crescimento ainda é lento, mas as bases estão sendo construídas. É o período mais difícil porque a impaciência bate forte aqui.'},
+        {titulo:'O que acontece entre 60 e 90 dias',texto:'Com consistência entre 60 e 90 dias, o algoritmo já distribui com mais constância. Os seguidores que chegam são mais qualificados porque o perfil já tem identidade definida. É nesse período que o crescimento começa a se tornar perceptível.'},
+        {titulo:'Por que a maioria desiste antes de chegar lá',texto:'A maioria das pessoas desiste entre 30 e 45 dias. Justamente quando o algoritmo estava começando a aprender o perfil. Desistir nesse ponto é como plantar uma semente, regar por um mês e arrancar antes de ela brotar. Consistência é o que separa quem cresce de quem fica estagnado.'},
+        {titulo:'Como usar esse tema para justificar o seu serviço',texto:'Ao mostrar que crescimento real leva tempo e requer consistência, você automaticamente justifica por que contratar um social media faz sentido: manter a consistência sozinho é difícil. Ter alguém responsável pelo planejamento e produção aumenta muito as chances de chegar nos 90 dias com o perfil funcionando.'}
+      ],
+      dica:'Esse tema tem alto potencial de ser salvo porque as pessoas querem guardar para mostrar para quem cobra resultado rápido. Incentive o salvamento no CTA.'
+    },
+    carrossel:{
+      objetivo:'Gerenciar expectativas, mostrar autoridade e valorizar consistência como serviço.',
+      slides:[
+        {label:'Capa',text:'Quanto tempo leva para crescer no TikTok? A resposta que ninguém te deu ainda.',tip:'Capa com destaque na pergunta. Tom de quem vai revelar algo importante.'},
+        {label:'Slide 2',text:'Primeiro, vamos desmontar o mito: não existe fórmula de 7 dias para explodir no TikTok. Quem te prometeu isso estava te vendendo ilusão.',tip:''},
+        {label:'Slide 3 — Dias 1 a 30',text:'Nos primeiros 30 dias, o algoritmo está aprendendo quem você é. O crescimento é lento, os números parecem pequenos. Mas as bases estão sendo construídas. Não desista aqui.',tip:''},
+        {label:'Slide 4 — Dias 31 a 60',text:'Entre 30 e 60 dias, o algoritmo já distribui com mais estabilidade. Você começa a notar seguidores chegando com mais frequência e o engajamento ficando mais consistente.',tip:''},
+        {label:'Slide 5 — Dias 61 a 90',text:'Com 90 dias de consistência, o perfil já tem identidade, o algoritmo já entende o seu nicho e os seguidores que chegam são muito mais qualificados.',tip:''},
+        {label:'Slide 6',text:'O problema é que a maioria desiste entre o dia 30 e o dia 45. Justamente quando o algoritmo estava começando a distribuir de verdade.',tip:''},
+        {label:'Slide 7 — CTA',text:'Crescimento real é resultado de consistência. E manter a consistência sozinho é difícil. Me chama no direct. Eu cuido dessa parte por você.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Eu mantenho a sua consistência para você chegar nos 90 dias com resultado.',copy:'"Me chama no direct. Vamos construir seu crescimento juntos."'}
+    },
+    video:{
+      objetivo:'Ser direto e realista, gerando identificação com quem já desistiu ou está frustrado.',
+      duracao:'40 a 55 segundos',
+      gancho:{texto:'Quanto tempo leva para crescer no TikTok? Vou te dar a resposta honesta que a maioria não quer dar.',dica:'Tom sério e confiante. Promessa de honestidade é um gancho muito forte.'},
+      desenvolvimento:[
+        {bloco:'O mito (10 seg)',texto:'Não existe fórmula de 7 dias. Quem promete isso está mentindo. Crescimento real leva tempo.'},
+        {bloco:'A realidade (20 seg)',texto:'Com consistência, os primeiros 30 dias são de aprendizado. Entre 60 e 90 dias o algoritmo começa a distribuir de verdade. É aí que o crescimento aparece.'},
+        {bloco:'O erro fatal (10 seg)',texto:'A maioria desiste no dia 40. Justamente quando estava começando a funcionar.'},
+      ],
+      cta:{texto:'Se você quer chegar nos 90 dias com consistência, me chama no direct. Eu faço essa parte por você.',dica:'Tom de parceria. Você está oferecendo resolver o principal problema: a consistência.'},
+      dicas:'Fale com firmeza. Esse vídeo precisa de um tom de quem entende do assunto e não tem medo de ser direto.'
+    },
+    legenda:'Crescer no TikTok não tem atalho. Tem consistência.\n\nOs primeiros 30 dias são os mais difíceis porque os números ainda são pequenos. Mas é nesse período que o algoritmo está aprendendo quem você é.\n\nCom 90 dias de conteúdo consistente, o resultado começa a aparecer de verdade.\n\nO problema? A maioria desiste no dia 40. Justamente quando estava começando a funcionar.\n\nSe você quer crescer, precisa de estratégia e de alguém que te ajude a manter a consistência. Me chama no direct.',
+    hashtags:['#tiktokparacrecer','#crescernoredesSociais','#socialmediatips','#marketingdigital','#tiktokestrategia','#crescimentoorganico','#dicasdetiktok','#redessociais','#socialmediamarketing','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Crescer e ser descoberto por novas pessoas',
+      items:[
+        {nivel:'ruim',formato:'Foto estática no feed',icone:'📷',desc:'Foto única no feed tem alcance orgânico muito baixo em 2025. O Instagram e o TikTok priorizam formatos que geram tempo de tela. Uma imagem estática não segura o usuário por mais de 1 segundo.'},
+        {nivel:'bom',formato:'Carrossel educativo',icone:'📑',desc:'Carrossel gera salvamento e mantém o usuário interagindo por mais tempo. O algoritmo interpreta isso como sinal de qualidade e distribui para mais pessoas. Ótimo para crescimento orgânico consistente.'},
+        {nivel:'excelente',formato:'Vídeo curto (Reels / TikTok)',icone:'🎬',desc:'Vídeo é o formato com maior alcance orgânico nas duas plataformas. O TikTok foi construído para vídeo e o Instagram prioriza Reels acima de todos os outros formatos. Para ser descoberto por novas pessoas, vídeo é insuperável.'}
+      ],
+      fonte:'Fonte: HubSpot (vídeos curtos têm taxa de retenção de 52%), Sebrae-RN (TikTok vs Instagram 2025), Container Criativo (formatos Instagram 2025).'
+    }
+  },
+  {
+    day:2, type:'carrossel',
+    theme:'O que é taxa de engajamento e por que você precisa monitorar a sua',
+    sobre:{
+      intro:'Muitos empreendedores medem o crescimento pelo número de seguidores, mas a métrica que realmente importa é o engajamento. Ao ensinar isso, você demonstra conhecimento técnico e abre conversa sobre análise de resultados, que é parte do seu acompanhamento básico.',
+      paras:[
+        {titulo:'Por que seguidores não são a métrica mais importante',texto:'Um perfil com 500 seguidores e 10% de engajamento é muito mais valioso do que um perfil com 10 mil seguidores e 0,5% de engajamento. O que importa não é o tamanho da audiência: é o quanto ela está conectada com o conteúdo.'},
+        {titulo:'O que é taxa de engajamento e como calcular',texto:'Taxa de engajamento é a proporção entre as interações (curtidas, comentários, salvamentos, compartilhamentos) e o número de seguidores ou de visualizações. Uma taxa saudável no TikTok fica entre 5% e 9%. No Instagram, entre 1% e 5% já é considerado bom.'},
+        {titulo:'Por que salvamento é a interação mais valiosa',texto:'Curtida é superficial. Comentário é bom. Compartilhamento é ótimo. Mas salvamento é o sinal mais forte que você pode dar para o algoritmo. Quando alguém salva um conteúdo, está dizendo: "isso é tão valioso que eu quero guardar para ver de novo." O algoritmo interpreta isso como qualidade máxima.'},
+        {titulo:'Como usar engajamento para guiar o planejamento de conteúdo',texto:'Ao analisar quais posts têm maior engajamento, você descobre o que a audiência realmente quer ver. Isso alimenta o planejamento dos meses seguintes. É por isso que o acompanhamento de métricas é parte do trabalho de um social media, mesmo que seja básico.'},
+        {titulo:'Como esse tema conecta com o seu serviço',texto:'Ao ensinar o cliente a entender engajamento, você está mostrando que o seu trabalho não é só criar posts: é criar conteúdo que gera resultado mensurável. Isso eleva muito a percepção de valor do seu serviço.'}
+      ],
+      dica:'Esse post tem alto potencial de salvamento porque ensina algo prático que as pessoas vão querer consultar depois. Coloque a fórmula de cálculo em um dos slides de forma visual.'
+    },
+    carrossel:{
+      objetivo:'Educar sobre métricas, mostrar conhecimento técnico e valorizar o acompanhamento.',
+      slides:[
+        {label:'Capa',text:'Taxa de engajamento: o que é, como calcular e por que importa mais que o número de seguidores.',tip:''},
+        {label:'Slide 2',text:'Seguidor é vanidade. Engajamento é resultado. Um perfil com 500 seguidores engajados converte mais do que um com 10 mil seguidores silenciosos.',tip:''},
+        {label:'Slide 3',text:'Taxa de engajamento = (curtidas + comentários + salvamentos) ÷ número de seguidores × 100. Uma taxa acima de 5% no TikTok e acima de 1,5% no Instagram já é considerada boa.',tip:'Destaque essa fórmula visualmente. As pessoas vão salvar esse slide.'},
+        {label:'Slide 4',text:'Salvamento é a interação mais valiosa. Quando alguém salva o seu post, o algoritmo entende que aquele conteúdo é muito bom e passa a distribuí-lo para mais pessoas.',tip:''},
+        {label:'Slide 5',text:'Compartilhamento é a segunda mais valiosa. Quando alguém compartilha, você chega para uma audiência nova sem precisar criar nada.',tip:''},
+        {label:'Slide 6',text:'Monitorar essas métricas te diz o que está funcionando. E o que funciona se repete. É assim que um perfil cresce de forma inteligente.',tip:''},
+        {label:'Slide 7 — CTA',text:'Parte do meu trabalho é acompanhar essas métricas com você. Me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Eu cuido da estratégia e do acompanhamento básico de resultados.',copy:'"Me chama no direct. Estratégia + análise de resultados."'}
+    },
+    video:{
+      objetivo:'Ensinar métricas de forma acessível e mostrar que você usa esses dados no trabalho.',
+      duracao:'40 a 50 segundos',
+      gancho:{texto:'Você mede o crescimento do seu perfil pelo número de seguidores? Então você está olhando para a métrica errada.',dica:'Afirmação contraintuitiva que gera curiosidade imediata.'},
+      desenvolvimento:[
+        {bloco:'A métrica certa (15 seg)',texto:'A métrica que importa é o engajamento. Curtida, comentário, salvamento e compartilhamento. Esses são os sinais que o algoritmo usa para decidir se vai distribuir o seu conteúdo ou não.'},
+        {bloco:'O mais importante (15 seg)',texto:'O salvamento é o mais valioso de todos. Quando alguém salva o seu post, está dizendo: "esse conteúdo é bom o suficiente para guardar". O algoritmo vê isso e distribui para muito mais gente.'},
+      ],
+      cta:{texto:'Eu monitoro essas métricas como parte do meu trabalho. Me chama no direct.',dica:''},
+      dicas:'Vídeo educativo e direto. Pode ser mais técnico porque o público que consome esse tipo de conteúdo gosta de informação precisa.'
+    },
+    legenda:'Número de seguidores é a métrica mais superestimada das redes sociais.\n\nO que realmente importa é o engajamento: curtidas, comentários, salvamentos e compartilhamentos.\n\nE o mais poderoso de todos? O salvamento. Quando alguém salva o seu post, o algoritmo entende que aquele conteúdo tem valor e distribui para ainda mais pessoas.\n\nMonitorar essas métricas é o que separa quem cresce de quem só posta.\n\nSalva esse post para não esquecer a fórmula. E se quiser acompanhamento estratégico, me chama no direct.',
+    hashtags:['#engajamento','#dicasderedessociais','#metricas','#instagrammarketing','#tiktokestrategia','#socialmedia','#marketingdigital','#crescimentoorganico','#taxadeengajamento','#dicasdesocialmedia'],
+    qualidade:{
+      objetivo:'Gerar salvamento e ser usado como referência',
+      items:[
+        {nivel:'ruim',formato:'Vídeo falado sem visual de apoio',icone:'🎙️',desc:'Para conteúdo técnico como métricas e fórmulas, vídeo falado sem nada escrito na tela não funciona bem. A pessoa precisa anotar, e no vídeo isso é difícil. O resultado é baixo salvamento e baixa retenção.'},
+        {nivel:'bom',formato:'Vídeo com legenda e dados na tela',icone:'📊',desc:'Quando o vídeo mostra os números na tela enquanto você fala, a retenção melhora muito. A legenda cobre quem assiste sem som. Bom resultado, mas ainda inferior ao carrossel para esse tipo de conteúdo.'},
+        {nivel:'excelente',formato:'Carrossel com fórmulas e exemplos visuais',icone:'📑',desc:'Para ensinar métricas e cálculos, carrossel é o formato ideal. A pessoa consegue reler, salvar e consultar depois. Taxa de salvamento em carrosseis educativos é significativamente maior do que em vídeos para esse tipo de conteúdo.'}
+      ],
+      fonte:'Fonte: Instaplace (Guia carrossel Instagram 2026), iComunicação (algoritmo Instagram formatos 2025).'
+    }
+  },
+  {
+    day:4, type:'video',
+    theme:'A diferença entre criar conteúdo e criar conteúdo estratégico',
+    sobre:{
+      intro:'Esse tema separa quem apenas produz posts de quem realmente trabalha com estratégia. É um dos argumentos mais poderosos para justificar o valor do seu serviço. Qualquer pessoa consegue criar conteúdo. Poucos sabem criar conteúdo com intenção.',
+      paras:[
+        {titulo:'O que a maioria das pessoas faz quando "cria conteúdo"',texto:'A maioria das pessoas posta quando tem vontade, sobre o que veio na cabeça, no formato que ficou mais fácil. Isso é criar conteúdo. Não tem nada de errado nisso. Mas o resultado é imprevisível, inconsistente e raramente atinge os objetivos do negócio.'},
+        {titulo:'O que é conteúdo estratégico na prática',texto:'Conteúdo estratégico começa com um objetivo: atrair, engajar ou converter? Depois define o formato mais adequado para aquele objetivo. Depois escreve o roteiro com gancho, desenvolvimento e CTA. Depois analisa o resultado e ajusta o próximo. Cada post tem uma função dentro de um sistema.'},
+        {titulo:'Como isso impacta o resultado do perfil',texto:'Um perfil com conteúdo estratégico cresce de forma previsível. Porque cada post tem um papel. O post educativo atrai. O post de bastidor humaniza. O post de venda converte. Quando você combina os três de forma intencional, o perfil trabalha por você.'},
+        {titulo:'Por que você precisa mostrar isso no seu conteúdo',texto:'Ao explicar a diferença entre criar conteúdo e criar conteúdo estratégico, você está educando o seu público sobre o que o seu serviço realmente oferece. Não é só "fazer post". É planejar, executar com intenção e analisar resultado.'},
+        {titulo:'Como usar esse tema para mostrar autoridade',texto:'Qualquer pessoa com celular consegue fazer um post. Mas nem todo mundo entende de objetivo, funil, engajamento, algoritmo e CTA. Ao falar sobre isso com naturalidade e propriedade, você se posiciona claramente como profissional.'}
+      ],
+      dica:'Esse tema funciona muito bem como vídeo porque você pode mostrar a sua própria raciocínio em tempo real, pensando em voz alta sobre o que é estratégia versus improviso.'
+    },
+    carrossel:{
+      objetivo:'Mostrar profundidade estratégica e diferenciar o serviço profissional do improviso.',
+      slides:[
+        {label:'Capa',text:'Criar conteúdo qualquer um faz. Criar conteúdo estratégico é outra coisa.',tip:''},
+        {label:'Slide 2',text:'Conteúdo comum: posta quando dá vontade, sobre o que veio na cabeça, sem objetivo definido.',tip:''},
+        {label:'Slide 3',text:'Conteúdo estratégico: começa com um objetivo (atrair, engajar ou converter), escolhe o formato certo e escreve o roteiro com gancho e CTA.',tip:''},
+        {label:'Slide 4',text:'A diferença no resultado: conteúdo comum cresce de forma aleatória. Conteúdo estratégico cresce de forma previsível.',tip:''},
+        {label:'Slide 5',text:'Cada post tem uma função: educar para atrair, mostrar bastidor para humanizar, vender para converter. Quando isso está integrado, o perfil trabalha por você.',tip:''},
+        {label:'Slide 6 — CTA',text:'Isso é o que eu faço. Não só "faço post". Planejo, executo com intenção e acompanho resultado. Me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Eu crio conteúdo com estratégia, não com improviso.',copy:'"Me chama no direct. Estratégia de conteúdo com intenção."'}
+    },
+    video:{
+      objetivo:'Mostrar raciocínio estratégico em tempo real para gerar credibilidade.',
+      duracao:'45 a 60 segundos',
+      gancho:{texto:'Criar conteúdo qualquer um faz. O que a maioria não sabe é criar conteúdo estratégico. Diferença enorme.',dica:'Tom assertivo e confiante desde o início.'},
+      desenvolvimento:[
+        {bloco:'O que é estratégico (20 seg)',texto:'Conteúdo estratégico começa com uma pergunta: qual é o objetivo desse post? Atrair seguidores? Engajar quem já segue? Converter em cliente? A resposta define o formato, o roteiro e o CTA.'},
+        {bloco:'Por que isso muda o resultado (15 seg)',texto:'Quando cada post tem uma função dentro de um sistema, o perfil cresce de forma previsível. Não depende de sorte ou de viralizar.'},
+      ],
+      cta:{texto:'Eu crio conteúdo estratégico para o seu perfil. Me chama no direct.',dica:''},
+      dicas:'Fale pensando em voz alta, como se estivesse explicando para um amigo. Esse tom de raciocínio compartilhado cria muita conexão.'
+    },
+    legenda:'Criar conteúdo qualquer um faz.\n\nMas criar conteúdo estratégico — com objetivo, formato certo, gancho e CTA — é o que realmente faz um perfil crescer de forma previsível.\n\nConteúdo sem estratégia é improviso. Pode funcionar uma vez. Mas não tem consistência.\n\nConteúdo com estratégia tem função. Cada post atrai, engaja ou converte. E quando os três funcionam juntos, o perfil trabalha por você.\n\nÉ isso que eu ofereço. Me chama no direct.',
+    hashtags:['#estrategiaconteudo','#socialmedia','#marketingdigital','#conteudoestragico','#dicassocialmedia','#tiktokestrategia','#instagrammarketing','#redessociais','#planejamentodeconteudo','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Mostrar autoridade e gerar conexão com o público',
+      items:[
+        {nivel:'ruim',formato:'Carrossel só com texto genérico',icone:'📝',desc:'Carrossel com texto genérico e sem personalidade raramente gera conexão. Para mostrar autoridade profissional, o texto precisa de perspectiva própria e opinião clara. Sem isso, fica esquecível.'},
+        {nivel:'bom',formato:'Carrossel com exemplos práticos',icone:'📑',desc:'Carrossel com exemplos concretos funciona bem para educar. Gera salvamento e autoridade. Mas para criar conexão emocional com o público, o vídeo é mais eficaz.'},
+        {nivel:'excelente',formato:'Vídeo falando diretamente para a câmera',icone:'🎬',desc:'Para mostrar autoridade e criar identificação, vídeo onde você fala diretamente para a câmera é o formato mais poderoso. Expressão, tom de voz e personalidade são impossíveis de replicar em texto. Gera confiança muito mais rápido.'}
+      ],
+      fonte:'Fonte: Sebrae-RN (formatos que mais convertem 2025), Amper (formatos Instagram e TikTok 2024).'
+    }
+  },
+  {
+    day:6, type:'carrossel',
+    theme:'O que postar quando você não sabe o que postar: 7 ideias para nunca travar',
+    sobre:{
+      intro:'O bloqueio criativo é a queixa mais comum de quem cria conteúdo sozinho. Ao oferecer soluções práticas para isso, você entrega valor imediato e ao mesmo tempo posiciona o seu serviço de planejamento como a solução definitiva para esse problema.',
+      paras:[
+        {titulo:'Por que o bloqueio criativo acontece',texto:'O bloqueio criativo não é falta de criatividade: é falta de sistema. Quando você não tem pilares definidos, não tem calendário e não tem processo, toda semana começa do zero. Isso é exaustivo e inevitavelmente leva ao travamento.'},
+        {titulo:'A solução mais simples: responder dúvidas do seu público',texto:'As melhores ideias de conteúdo estão nas perguntas que as pessoas fazem para você. Nos comentários, nos directs, nas perguntas de Stories. Cada dúvida é uma pauta. Ao responder publicamente, você cria conteúdo relevante sem precisar inventar nada.'},
+        {titulo:'Como usar tendências sem perder a identidade',texto:'Tendências são atalhos de alcance. Você pega um formato ou som que está viral e aplica ao seu nicho. Mas não abandone o que é seu por causa de uma trend. O equilíbrio é usar a tendência como embalagem para o seu conteúdo, não substituir o seu conteúdo pela tendência.'},
+        {titulo:'O poder do conteúdo de bastidor',texto:'Bastidor é o tipo de conteúdo mais fácil de criar e um dos que mais humaniza o perfil. Você não precisa de roteiro elaborado: basta mostrar o que está fazendo agora. O cliente que está pensando em te contratar quer saber como você trabalha. Bastidor responde isso de forma natural.'},
+        {titulo:'Por que ter um banco de ideias muda tudo',texto:'A solução definitiva para o bloqueio criativo é ter um banco de ideias sempre abastecido. Toda vez que uma ideia aparecer, anote. Quando travar, você abre o banco e tem dezenas de opções. É simples e transforma completamente a relação com a criação de conteúdo.'}
+      ],
+      dica:'Esse post funciona como isca de conteúdo: ao dar ideias para quem não sabe o que postar, você atrai exatamente o perfil de pessoa que precisa do seu serviço de calendário e roteiro.'
+    },
+    carrossel:{
+      objetivo:'Entregar valor prático imediato e posicionar calendário/planejamento como solução definitiva.',
+      slides:[
+        {label:'Capa',text:'7 ideias de conteúdo para quando você não sabe o que postar. Salva esse.',tip:'Já avisa que é para salvar. Incentiva a interação de maior valor.'},
+        {label:'Slide 2 — Ideia 1',text:'Responda uma dúvida frequente do seu público. Cada pergunta que você recebe no direct ou nos comentários é uma pauta pronta.',tip:''},
+        {label:'Slide 3 — Ideia 2',text:'Mostre um bastidor do seu dia. Como você trabalha, o seu processo, o seu espaço. Humaniza o perfil e não precisa de roteiro.',tip:''},
+        {label:'Slide 4 — Ideia 3',text:'Compartilhe uma opinião polêmica sobre o seu nicho. Algo que você acredita mas que vai contra o senso comum. Gera comentários e debate.',tip:''},
+        {label:'Slide 5 — Ideia 4',text:'Faça um antes e depois de algum trabalho ou aprendizado. Mostrar evolução é muito engajador.',tip:''},
+        {label:'Slide 6 — Ideia 5',text:'Use uma tendência do TikTok ou do Instagram e aplique ao seu nicho. Tendência é embalagem. O conteúdo é seu.',tip:''},
+        {label:'Slide 7 — Ideia 6 e 7',text:'Ideia 6: Reposte um post antigo que performou bem com uma nova legenda. Ideia 7: Apresente um serviço seu de forma criativa, contando um problema que ele resolve.',tip:''},
+        {label:'Slide 8 — CTA',text:'Ou, melhor ainda: me chama no direct e eu monto o seu calendário para nunca mais travar.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Com um calendário montado, você nunca mais vai travar sem saber o que postar.',copy:'"Me chama no direct. Calendário de conteúdo para nunca mais travar."'}
+    },
+    video:{
+      objetivo:'Entregar dicas rápidas e posicionar o calendário como a solução mais inteligente.',
+      duracao:'40 a 55 segundos',
+      gancho:{texto:'Você trava toda semana sem saber o que postar? Tenho 7 ideias que resolvem isso na hora.',dica:'Promessa de solução imediata. Muito eficaz.'},
+      desenvolvimento:[
+        {bloco:'As 3 melhores ideias (20 seg)',texto:'Primeira: responda uma dúvida do seu público. Segunda: mostre bastidor do seu dia. Terceira: compartilhe uma opinião polêmica sobre o seu nicho. Essas três sozinhas já enchem a semana.'},
+        {bloco:'A solução definitiva (10 seg)',texto:'Mas a solução de verdade é não esperar travar. É ter um calendário pronto para o mês inteiro.'},
+      ],
+      cta:{texto:'Eu monto esse calendário para você. Me chama no direct.',dica:''},
+      dicas:'Vídeo rápido e dinâmico. Liste as ideias de forma acelerada para manter o ritmo.'
+    },
+    legenda:'Trava toda semana sem saber o que postar? Isso é falta de sistema, não falta de criatividade.\n\nAqui vão 7 ideias para nunca mais travar:\n\n1. Responda uma dúvida do seu público\n2. Mostre bastidor do seu dia\n3. Compartilhe uma opinião polêmica\n4. Faça um antes e depois\n5. Use uma tendência no seu nicho\n6. Reposte um post antigo que performou\n7. Apresente um serviço contando o problema que ele resolve\n\nSalva esse post. E se quiser nunca mais pensar nisso, me chama no direct. Eu monto o seu calendário.',
+    hashtags:['#ideiasdecoteudo','#calendariodeconteudo','#dicassocialmedia','#criatividade','#marketingdigital','#socialmediamarketing','#tiktokestrategia','#instagramdicas','#empreendedorismo','#conteudodigital'],
+    qualidade:{
+      objetivo:'Conteúdo de lista e dicas práticas',
+      items:[
+        {nivel:'ruim',formato:'Vídeo longo explicando cada dica',icone:'🎥',desc:'Listas longas em vídeo perdem o espectador rapidamente. Quando você tem 7 itens para listar em vídeo, é fácil ficar muito longo e ver a retenção despencar. Formato inadequado para conteúdo de lista.'},
+        {nivel:'bom',formato:'Vídeo rápido com lista visual na tela',icone:'📊',desc:'Mostrar a lista na tela enquanto fala melhora muito a retenção. Funciona bem no TikTok por ser dinâmico e rápido. Mas perde em salvamento para o carrossel.'},
+        {nivel:'excelente',formato:'Carrossel com um item por slide',icone:'📑',desc:'Para listas e dicas, carrossel com um item por slide é o formato ideal. Cada slide tem um item, a pessoa desliza com curiosidade para ver o próximo, e o salvamento é natural porque as pessoas querem guardar a lista completa.'}
+      ],
+      fonte:'Fonte: Instaplace (melhores práticas carrossel Instagram 2026), Container Criativo (formatos para engajamento 2025).'
+    }
+  },
+  {
+    day:7, type:'carrossel',
+    theme:'Por que o seu nicho importa mais do que você pensa (e como definir o seu)',
+    sobre:{
+      intro:'Nicho é um dos conceitos mais importantes e mais resistidos na criação de conteúdo. Muita gente tem medo de se especializar achando que vai perder clientes. Na verdade, acontece o contrário. Esse tema é muito relevante para quem está começando a criar conteúdo para um negócio.',
+      paras:[
+        {titulo:'O paradoxo do nicho: quanto mais específico, mais você cresce',texto:'Parece contraintuitivo, mas quanto mais específico é o seu nicho, mais fácil fica de crescer. Porque o algoritmo consegue categorizar o seu perfil com mais precisão e distribui para as pessoas certas. E as pessoas certas engajam mais, seguem mais e compram mais.'},
+        {titulo:'O que acontece quando você não define o nicho',texto:'Sem nicho definido, o algoritmo não sabe para quem distribuir o seu conteúdo. Você atinge todo mundo e não converte ninguém. O perfil fica com muito alcance e pouco engajamento. E pouco engajamento significa menos distribuição, menos clientes e mais frustração.'},
+        {titulo:'Como definir o nicho sem ter medo de limitar',texto:'Nicho não é uma prisão. É um ponto de partida. Você começa específico, constrói autoridade naquele tema e, conforme cresce, pode ampliar naturalmente. Mas começar aberto demais é uma das principais razões por que perfis novos não crescem.'},
+        {titulo:'Como nicho conecta com os pilares de conteúdo',texto:'Quando você tem um nicho claro, os pilares de conteúdo se definem quase sozinhos. Você sabe sobre o que falar, quem é o seu público e qual problema você resolve. Tudo fica mais fácil: a criação, o planejamento e a conversão.'},
+        {titulo:'Como usar esse tema para mostrar que você entende o negócio do cliente',texto:'Ao falar sobre nicho com profundidade, você mostra que o seu trabalho vai além de criar posts. Você entende de estratégia de posicionamento. Isso eleva muito a percepção de valor do serviço que você oferece.'}
+      ],
+      dica:'Esse tema conecta muito bem com empreendedores que estão começando ou que têm perfis que não crescem apesar de postar com frequência. É um conteúdo que resolve uma dor que a pessoa não sabia nomear.'
+    },
+    carrossel:{
+      objetivo:'Educar sobre nicho, mostrar autoridade estratégica e atrair clientes que precisam de direcionamento.',
+      slides:[
+        {label:'Capa',text:'Seu perfil não está crescendo? Pode ser que você não tenha nicho definido.',tip:''},
+        {label:'Slide 2',text:'Nicho é o tema central do seu perfil. É sobre o que você fala, para quem você fala e qual problema você resolve.',tip:''},
+        {label:'Slide 3',text:'Sem nicho definido, o algoritmo não sabe para quem distribuir o seu conteúdo. Você atinge todo mundo e não converte ninguém.',tip:''},
+        {label:'Slide 4',text:'Quanto mais específico o nicho, mais fácil de crescer. Porque você fala com as pessoas certas, que engajam mais, seguem mais e compram mais.',tip:''},
+        {label:'Slide 5',text:'Nicho não é uma prisão. É um ponto de partida. Você começa específico, constrói autoridade e amplia naturalmente conforme cresce.',tip:''},
+        {label:'Slide 6',text:'Como definir: qual problema você resolve? Para quem? De que forma diferente dos outros? Essas três perguntas já entregam o seu nicho.',tip:''},
+        {label:'Slide 7 — CTA',text:'Eu ajudo você a definir o nicho do seu perfil como parte do planejamento de conteúdo. Me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Vamos definir o nicho do seu perfil juntos.',copy:'"Me chama no direct. Posicionamento e estratégia de nicho."'}
+    },
+    video:{
+      objetivo:'Provocar reflexão sobre posicionamento e mostrar profundidade estratégica.',
+      duracao:'40 a 55 segundos',
+      gancho:{texto:'Se o seu perfil não está crescendo mesmo com frequência e consistência, o problema pode ser que você não tem nicho definido.',dica:'Esse gancho fala direto com quem está frustrado com a falta de resultado.'},
+      desenvolvimento:[
+        {bloco:'O problema do nicho aberto (15 seg)',texto:'Sem nicho, o algoritmo não sabe para quem te mostrar. Você atinge todo mundo. E quando você fala para todo mundo, você não fala com ninguém de verdade.'},
+        {bloco:'A solução (15 seg)',texto:'Nicho específico = algoritmo mais certeiro = pessoas certas chegando = engajamento maior = crescimento real. Parece contraintuitivo, mas quanto mais você afunila, mais você cresce.'},
+      ],
+      cta:{texto:'Me chama no direct. Eu te ajudo a definir o nicho do seu perfil.',dica:''},
+      dicas:'Tom de consultor. Fale com segurança e propriedade sobre o tema.'
+    },
+    legenda:'Se o seu perfil tem frequência, tem conteúdo, mas não cresce, o problema pode ser esse: você não tem nicho definido.\n\nSem nicho, o algoritmo não sabe para quem te distribuir. Você fala para todo mundo. E quando fala para todo mundo, não converte ninguém.\n\nQuanto mais específico o seu nicho, mais o algoritmo te distribui para as pessoas certas. E as pessoas certas engajam, seguem e compram.\n\nDefine o seu nicho. Cresce primeiro nele. Depois amplia.\n\nMe chama no direct. Eu te ajudo com esse posicionamento.',
+    hashtags:['#nichodeconteudo','#posicionamento','#estrategiadigital','#socialmediatips','#marketingdigital','#crescimentoorganico','#tiktokestrategia','#instagramstrategy','#dicasdemarketing','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Construir autoridade e posicionamento como especialista',
+      items:[
+        {nivel:'ruim',formato:'Stories isolado sem contexto',icone:'📱',desc:'Stories sem ligação com o conteúdo do feed não constroem autoridade. São visualizados rapidamente e esquecidos. Para criar percepção de especialista, Stories precisa complementar um conteúdo maior, não substituí-lo.'},
+        {nivel:'bom',formato:'Carrossel educativo com exemplos',icone:'📑',desc:'Carrossel é muito bom para construir autoridade porque ensina de forma estruturada. Gera salvamento, que é um sinal forte de que o conteúdo é valioso. Boa escolha para esse tipo de tema.'},
+        {nivel:'excelente',formato:'Vídeo de opinião direta para a câmera',icone:'🎬',desc:'Para construir autoridade e posicionamento, vídeo onde você fala com convicção e perspectiva própria é o mais poderoso. Você não só ensina: você mostra quem você é e o que você pensa. Isso cria seguidores fiéis e clientes.'}
+      ],
+      fonte:'Fonte: iComunicação (algoritmo Instagram 2025), Sebrae-RN (formatos para autoridade 2025).'
+    }
+  },
+  {
+    day:8, type:'video',
+    theme:'Como saber se o seu conteúdo está funcionando: métricas simples para iniciantes',
+    sobre:{
+      intro:'Análise de resultados intimida quem está começando porque parece técnico demais. Ao simplificar esse processo em métricas básicas e acionáveis, você entrega muito valor e mostra que o seu acompanhamento básico tem fundamento real.',
+      paras:[
+        {titulo:'Por que iniciantes evitam olhar para as métricas',texto:'A maioria das pessoas evita olhar para as métricas por dois motivos: medo de ver números baixos (o que gera frustração) ou dificuldade de interpretar o que os números significam. Ao simplificar isso, você remove a barreira de entrada para uma prática essencial.'},
+        {titulo:'As 4 métricas que todo criador de conteúdo precisa acompanhar',texto:'Alcance: quantas pessoas viram o conteúdo. Engajamento: quantas interagiram. Taxa de salvamento: proporção de quem salvou. Taxa de clique no perfil: quantas pessoas clicaram para ver quem você é. Essas quatro métricas juntas contam a história completa do desempenho de um post.'},
+        {titulo:'O que fazer com esses dados na prática',texto:'Quando um post tem alcance alto mas engajamento baixo, o gancho funcionou mas o conteúdo não entregou o que prometeu. Quando o engajamento é alto mas o alcance é baixo, o conteúdo é bom mas chegou só para quem já te segue. Cada combinação de métricas diz o que ajustar.'},
+        {titulo:'Com que frequência analisar',texto:'Análise semanal é o ideal para quem está começando. Uma vez por semana, você olha para os 3 posts da semana anterior, identifica qual teve melhor desempenho e anota o que foi diferente nele. Com o tempo, você vai reconhecendo padrões de forma natural.'},
+        {titulo:'Como o acompanhamento que você oferece se encaixa aqui',texto:'O acompanhamento básico que você oferece aos seus clientes inclui exatamente esse olhar sobre o que está funcionando. Ao mostrar que você faz isso, você demonstra que o seu trabalho tem uma camada de análise que vai além da produção.'}
+      ],
+      dica:'Esse tema é muito compartilhado porque muita gente manda para amigos dizendo "você precisa ver isso". Incentive o compartilhamento no CTA.'
+    },
+    carrossel:{
+      objetivo:'Simplificar análise de métricas e mostrar que seu acompanhamento tem base técnica.',
+      slides:[
+        {label:'Capa',text:'Como saber se o seu conteúdo está funcionando: 4 métricas simples que qualquer pessoa consegue acompanhar.',tip:''},
+        {label:'Slide 2 — Métrica 1: Alcance',text:'Alcance é quantas pessoas viram o seu conteúdo. Alto alcance significa que o algoritmo distribuiu bem. Se o alcance é baixo, pode ser problema de gancho ou de frequência.',tip:''},
+        {label:'Slide 3 — Métrica 2: Engajamento',text:'Engajamento é a soma de curtidas, comentários, salvamentos e compartilhamentos. Alto engajamento com alcance baixo = conteúdo bom que chegou poucos. Baixo engajamento com alcance alto = gancho funcionou mas o conteúdo decepcionou.',tip:''},
+        {label:'Slide 4 — Métrica 3: Salvamento',text:'Salvamento é a métrica mais valiosa. Se as pessoas estão salvando, o conteúdo é considerado valioso o suficiente para guardar. O algoritmo recompensa muito isso.',tip:''},
+        {label:'Slide 5 — Métrica 4: Clique no perfil',text:'Quantas pessoas clicaram para ver o seu perfil depois de ver o post? Isso indica que o conteúdo gerou interesse em você, não só no assunto.',tip:''},
+        {label:'Slide 6',text:'Analisar uma vez por semana já é suficiente. Olha para os 3 posts da semana, vê qual foi melhor e anota o que foi diferente nele.',tip:''},
+        {label:'Slide 7 — CTA',text:'Esse acompanhamento faz parte do meu trabalho. Me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Eu analiso os resultados com você como parte do serviço.',copy:'"Me chama no direct. Estratégia + análise básica de resultados."'}
+    },
+    video:{
+      objetivo:'Ensinar análise de métricas de forma simples e mostrar que você aplica isso.',
+      duracao:'45 a 55 segundos',
+      gancho:{texto:'Você posta e nem olha para os resultados depois? Então você está perdendo as informações mais valiosas que o TikTok te dá de graça.',dica:'Tom de revelação. Gera curiosidade e um pouco de culpa saudável.'},
+      desenvolvimento:[
+        {bloco:'As 4 métricas (25 seg)',texto:'Quatro coisas para olhar: alcance (quantos viram), engajamento (quantos interagiram), salvamento (quem achou valioso) e clique no perfil (quem ficou curioso sobre você). Essas quatro juntas te dizem tudo sobre o desempenho do post.'},
+        {bloco:'A frequência (10 seg)',texto:'Uma análise por semana já é suficiente para começar a reconhecer padrões e melhorar de forma consistente.'},
+      ],
+      cta:{texto:'Eu faço esse acompanhamento junto com você. Me chama no direct.',dica:''},
+      dicas:'Tom de professor acessível. Esse tema precisa parecer simples, não intimidador.'
+    },
+    legenda:'Você posta e não olha para os resultados depois?\n\nO algoritmo te dá de graça as informações mais valiosas sobre o que está funcionando. E ignorar isso é deixar dinheiro na mesa.\n\nQuatro métricas para acompanhar:\n📊 Alcance: quantas pessoas viram\n💬 Engajamento: quantas interagiram\n🔖 Salvamento: quem achou valioso o suficiente para guardar\n👤 Clique no perfil: quem ficou curioso sobre você\n\nUma análise por semana já muda o resultado. Me chama no direct se quiser fazer isso junto.',
+    hashtags:['#metricas','#analisederesultados','#instagraminsights','#tiktoktips','#socialmedia','#marketingdigital','#crescimentoorganico','#conteudodigital','#dicasdesocialmedia','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Ensinar conteúdo técnico de forma acessível',
+      items:[
+        {nivel:'ruim',formato:'Texto longo em post estático',icone:'📝',desc:'Post estático com muito texto tem alcance reduzido e baixa retenção. Para conteúdo técnico que precisa ser explicado com clareza, esse é o formato que menos funciona nas duas plataformas.'},
+        {nivel:'bom',formato:'Carrossel com uma métrica por slide',icone:'📑',desc:'Carrossel é bom para ensinar métricas porque cada slide pode focar em uma informação, facilitando a absorção. Gera salvamento porque as pessoas querem consultar depois.'},
+        {nivel:'excelente',formato:'Vídeo mostrando a tela do celular ao vivo',icone:'📱',desc:'Mostrar a tela do app de análise enquanto explica é o formato mais eficaz para esse tipo de conteúdo. A pessoa consegue ver exatamente onde clicar e o que olhar. Combina vídeo com prova visual concreta.'}
+      ],
+      fonte:'Fonte: iComunicação (formatos Instagram 2025), Linkme.bio (500 dicas Instagram e TikTok 2025).'
+    }
+  },
+  {
+    day:11, type:'carrossel',
+    theme:'Como uma boa bio atrai o cliente certo antes mesmo de ele ver o primeiro post',
+    sobre:{
+      intro:'A bio é o primeiro filtro do perfil. É ela que faz o visitante decidir se vai seguir ou não. E a maioria das bios nas redes sociais é genérica, confusa ou completamente desprovida de valor. Ao ensinar o que faz uma bio funcionar, você entrega valor imediato e mostra que entende de conversão.',
+      paras:[
+        {titulo:'Por que a bio é mais importante do que a maioria pensa',texto:'Quando alguém encontra o seu perfil pela primeira vez, seja por um vídeo viral, por uma busca ou por indicação, a primeira coisa que ele faz é ir até a bio. Em menos de 5 segundos, a pessoa decide se vai seguir ou não. Uma bio que não explica quem você é, o que você faz e para quem é o seu conteúdo perde seguidores antes mesmo de eles verem qualquer post.'},
+        {titulo:'Os 3 elementos que toda bio eficaz precisa ter',texto:'Primeiro: quem você é (em uma frase, sem jargão). Segundo: o que você faz e para quem (o problema que você resolve e o público que atende). Terceiro: a ação que você quer que a pessoa tome (me chama no direct, link na bio, baixe o material). Esses três elementos juntos transformam a bio em uma ferramenta de conversão.'},
+        {titulo:'O que as bios ruins têm em comum',texto:'Bios ruins falam sobre a pessoa, não sobre o que a pessoa pode fazer pelo seguidor. "Apaixonada por comunicação", "mãe e empreendedora", "sempre aprendendo" são frases que não dizem nada sobre o valor que você entrega. O seguidor em potencial está se perguntando: "o que eu ganho seguindo essa pessoa?" Se a bio não responde, ele vai embora.'},
+        {titulo:'Como adaptar a bio para TikTok e Instagram',texto:'No TikTok, a bio é mais curta e o tom é mais direto e descontraído. No Instagram, você tem um pouco mais de espaço e pode incluir palavras-chave que ajudam na busca interna da plataforma. Adaptar a bio para cada plataforma já faz diferença no alcance.'},
+        {titulo:'Como esse tema se conecta ao seu serviço',texto:'A bio não é um serviço que você lista explicitamente, mas ao otimizar o perfil de um cliente você naturalmente passa por ela. Ao mostrar que você entende de bio e conversão, você demonstra que o seu olhar estratégico vai além dos posts.'}
+      ],
+      dica:'Peça no Stories para os seguidores enviarem a bio deles para você dar um feedback rápido. Isso gera muita interação, abre conversas no direct e cria uma oportunidade natural para mostrar o seu valor.'
+    },
+    carrossel:{
+      objetivo:'Ensinar sobre bio, mostrar visão de conversão e abrir portas para diagnóstico de perfil.',
+      slides:[
+        {label:'Capa',text:'A sua bio está fazendo o visitante ficar ou ir embora? (a maioria está errando nessa parte)',tip:''},
+        {label:'Slide 2',text:'Em menos de 5 segundos, um visitante decide se vai te seguir ou não. E a bio é o que guia essa decisão.',tip:''},
+        {label:'Slide 3 — O que bio ruim tem',text:'Bio ruim fala sobre você. "Apaixonada por comunicação." "Mãe e empreendedora." O seguidor não quer saber sobre você ainda. Quer saber o que vai ganhar seguindo você.',tip:''},
+        {label:'Slide 4 — Elemento 1',text:'Quem você é em uma frase direta. Sem jargão, sem enrolação. Ex: "Eu ajudo pequenos negócios a crescer no TikTok."',tip:''},
+        {label:'Slide 5 — Elemento 2',text:'O que você faz e para quem. Ex: "Calendário, roteiro e edição de vídeo para quem quer presença digital consistente."',tip:''},
+        {label:'Slide 6 — Elemento 3',text:'A ação que você quer que a pessoa tome. Ex: "Me chama no direct para começar." ou "Link na bio para saber mais."',tip:''},
+        {label:'Slide 7 — CTA',text:'Quer uma análise rápida da sua bio? Me manda no direct. Vejo em que ela pode melhorar.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Posso dar um olhar estratégico na sua bio sem compromisso.',copy:'"Me chama no direct. Vamos otimizar a sua bio juntos."'}
+    },
+    video:{
+      objetivo:'Mostrar que conversão começa antes do primeiro post e demonstrar visão estratégica.',
+      duracao:'40 a 50 segundos',
+      gancho:{texto:'Se a sua bio não está convertendo visita em seguidor, não importa a qualidade dos seus posts.',dica:'Afirmação forte que vai contra a intuição de focar só no conteúdo.'},
+      desenvolvimento:[
+        {bloco:'O problema (15 seg)',texto:'Quando alguém encontra o seu perfil, a primeira coisa que ele vê é a bio. Em 5 segundos ele decide se fica ou vai. Se a bio não explica quem você é, o que você faz e para quem, ele vai embora.'},
+        {bloco:'A estrutura que funciona (15 seg)',texto:'Três elementos: quem você é, o que você faz e para quem, e o que a pessoa deve fazer agora. Esses três elementos transformam a bio em ferramenta de conversão.'},
+      ],
+      cta:{texto:'Me chama no direct. Posso dar um feedback rápido na sua bio.',dica:'Oferecer algo gratuito (o feedback) abre uma conversa de forma muito natural.'},
+      dicas:'Tom de consultoria. Mostre que você pensa em conversão, não só em conteúdo.'
+    },
+    legenda:'Você cuida tanto do conteúdo e esquece de uma coisa: a bio.\n\nÉ ela que faz o visitante decidir em 5 segundos se vai te seguir ou não.\n\nBio que não funciona:\n❌ "Apaixonada por comunicação"\n❌ "Sempre aprendendo"\n❌ "Mãe e empreendedora"\n\nBio que converte:\n✅ Quem você é (direto)\n✅ O que você faz e para quem\n✅ O que a pessoa deve fazer agora\n\nMe manda a sua bio no direct. Dou um feedback rápido.',
+    hashtags:['#bio','#instagrambio','#tiktoktips','#perfilprofissional','#socialmedia','#marketingdigital','#dicasdeinstagram','#conversao','#otimizacaodeperfil','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Gerar consultas e conversas no direct',
+      items:[
+        {nivel:'ruim',formato:'Carrossel só mostrando exemplos de bio',icone:'📋',desc:'Carrossel mostrando exemplos sem pedir ação específica perde a oportunidade de converter. O post educa, mas não gera conversa. Para um tema que tem potencial direto de contato, não usar o CTA certo é desperdiçar a oportunidade.'},
+        {nivel:'bom',formato:'Vídeo educativo sobre bio',icone:'🎬',desc:'Vídeo que ensina sobre bio funciona bem para alcance e autoridade. Mas o formato não convida tão naturalmente quanto o carrossel para a ação de enviar a própria bio no direct.'},
+        {nivel:'excelente',formato:'Carrossel + Stories de caixa de perguntas',icone:'📑',desc:'A combinação mais eficaz: o carrossel educa sobre o que é uma boa bio, e logo depois nos Stories você abre uma caixa de perguntas pedindo para as pessoas mandarem a bio delas. Isso gera conversas no direct de forma natural e em volume muito maior.'}
+      ],
+      fonte:'Fonte: Linkme.bio (dicas Instagram e TikTok 2025), iComunicação (estratégias de conversão 2025).'
+    }
+  },
+  {
+    day:12, type:'carrossel',
+    theme:'Frequência ideal de publicação no TikTok e no Instagram: o que realmente funciona',
+    sobre:{
+      intro:'Essa é uma dúvida que quase todos os empreendedores têm. "Quantas vezes por semana eu preciso postar?" A resposta honesta é mais nuançada do que a maioria dos gurus das redes sociais sugere, e isso é uma oportunidade de mostrar que você pensa além dos conselhos genéricos.',
+      paras:[
+        {titulo:'Por que não existe um número mágico',texto:'A frequência ideal depende de três fatores: a capacidade de produção de quem está criando o conteúdo, a qualidade que é possível manter com aquela frequência e o comportamento do algoritmo de cada plataforma. Um perfil que posta 7 vezes por semana com conteúdo mediano vai ter resultados piores do que um que posta 3 vezes com conteúdo excelente.'},
+        {titulo:'O que o algoritmo do TikTok prefere',texto:'O TikTok funciona muito bem com frequência mais alta porque o alcance orgânico é maior. Postar de 3 a 5 vezes por semana é o ideal para perfis em crescimento. Mas o mais importante é que os vídeos tenham qualidade de execução suficiente para ser assistidos até o fim.'},
+        {titulo:'O que o algoritmo do Instagram prefere',texto:'O Instagram é menos dependente de frequência alta. O que importa mais é consistência e qualidade. Postar de 3 a 4 vezes por semana no feed, combinado com Stories diários, é uma estratégia muito mais sólida do que postar 7 vezes no feed sem Stories.'},
+        {titulo:'O equilíbrio entre frequência e qualidade',texto:'A regra mais importante: nunca sacrifique qualidade por frequência. Postar conteúdo ruim frequentemente só treina o algoritmo para não distribuir o seu perfil. É melhor postar menos e garantir que cada post seja bom do que encher o feed com conteúdo sem valor.'},
+        {titulo:'Como você resolve o problema da frequência para o cliente',texto:'Uma das principais razões para contratar um social media é exatamente essa: manter a frequência ideal sem sacrificar a qualidade. Com calendário, roteiro e produção organizados, o cliente consegue manter a consistência necessária sem se sobrecarregar.'}
+      ],
+      dica:'Esse tema é muito compartilhado porque resolve uma dúvida universal. Incentive o compartilhamento e marque um amigo que também tem essa dúvida.'
+    },
+    carrossel:{
+      objetivo:'Desmistificar frequência, mostrar que qualidade supera quantidade e valorizar o planejamento.',
+      slides:[
+        {label:'Capa',text:'Quantas vezes por semana você precisa postar? A resposta que ninguém te deu ainda.',tip:''},
+        {label:'Slide 2',text:'Spoiler: não existe um número mágico. Depende da sua capacidade de produção e da qualidade que você consegue manter.',tip:''},
+        {label:'Slide 3 — TikTok',text:'No TikTok, de 3 a 5 vezes por semana é o ideal para crescimento. O alcance orgânico é maior aqui e frequência mais alta ajuda o algoritmo a distribuir.',tip:''},
+        {label:'Slide 4 — Instagram',text:'No Instagram, 3 a 4 vezes no feed por semana + Stories diários é mais eficaz do que postar 7 vezes no feed sem Stories.',tip:''},
+        {label:'Slide 5 — A regra mais importante',text:'Nunca sacrifique qualidade por frequência. Postar conteúdo ruim frequentemente é pior do que postar menos com qualidade. O algoritmo aprende com o desempenho dos posts.',tip:''},
+        {label:'Slide 6',text:'Consistência supera frequência. É melhor 3 posts excelentes por semana por 3 meses do que 7 posts mediocres por 2 semanas e depois parar.',tip:''},
+        {label:'Slide 7 — CTA',text:'Eu ajudo você a manter a frequência ideal sem sacrificar a qualidade. Me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Vamos montar uma frequência que funciona para o seu perfil.',copy:'"Me chama no direct. Frequência + qualidade + consistência."'}
+    },
+    video:{
+      objetivo:'Desmistificar frequência e mostrar que você pensa além dos conselhos genéricos.',
+      duracao:'40 a 50 segundos',
+      gancho:{texto:'Quantas vezes por semana você precisa postar no TikTok? A resposta vai te surpreender.',dica:''},
+      desenvolvimento:[
+        {bloco:'A regra (20 seg)',texto:'Não existe número mágico. O que existe é: qualidade supera quantidade. Três posts excelentes por semana batem sete posts mediocres toda vez.'},
+        {bloco:'Por plataforma (15 seg)',texto:'TikTok: 3 a 5 vezes por semana é o ideal. Instagram: 3 a 4 vezes no feed mais Stories diários é mais eficaz do que só feed.'},
+      ],
+      cta:{texto:'Me chama no direct. Ajudo você a manter a frequência certa.',dica:''},
+      dicas:'Vídeo direto e sem rodeios. Esse tema pede clareza acima de tudo.'
+    },
+    legenda:'Quantas vezes por semana você precisa postar?\n\nA resposta honesta: depende.\n\nMas a regra que nunca muda: qualidade supera quantidade.\n\nTrês posts excelentes por semana por 3 meses criam um perfil sólido. Sete posts mediocres por semana que param no segundo mês não criam nada.\n\nTikTok: 3 a 5 vezes por semana é o ideal.\nInstagram: 3 a 4 vezes no feed + Stories diários.\n\nConsistência é o segredo. Me chama no direct se precisar de ajuda para manter isso.',
+    hashtags:['#frequenciadepublicacao','#tiktokestrategia','#instagramdicas','#socialmedia','#marketingdigital','#crescimentoorganico','#dicasdeconteudo','#redessociais','#consistencia','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Conteúdo informativo com alto potencial de compartilhamento',
+      items:[
+        {nivel:'ruim',formato:'Post estático com a resposta direta',icone:'📷',desc:'Post estático com uma resposta única é fácil de criar, mas tem baixa retenção e alcance limitado. Para um tema que as pessoas querem compartilhar e salvar, o post estático perde muito em comparação com formatos mais ricos.'},
+        {nivel:'bom',formato:'Vídeo rápido com comparação das plataformas',icone:'🎬',desc:'Vídeo que compara TikTok e Instagram de forma dinâmica funciona bem para alcance. Mas para um conteúdo que as pessoas querem guardar como referência, o carrossel tem vantagem em salvamento.'},
+        {nivel:'excelente',formato:'Carrossel com um dado por slide',icone:'📑',desc:'Para conteúdo informativo com múltiplos dados, carrossel com um dado por slide é o mais eficaz. A progressão mantém o usuário curioso, o formato incentiva o salvamento para consultar depois e a taxa de compartilhamento é alta porque é conteúdo útil.'}
+      ],
+      fonte:'Fonte: Sebrae-RN (frequência e estratégia TikTok vs Instagram 2025), Container Criativo (melhores práticas Instagram 2025).'
+    }
+  },
+  {
+    day:13, type:'video',
+    theme:'Por que você precisa de uma identidade visual no TikTok (mesmo sendo iniciante)',
+    sobre:{
+      intro:'Identidade visual é um tema que parece avançado mas é mais acessível do que parece. Ao mostrar que identidade visual não precisa ser cara ou complexa para funcionar, você entrega um conteúdo muito prático e ao mesmo tempo demonstra que o seu trabalho considera a estética do perfil.',
+      paras:[
+        {titulo:'O que identidade visual realmente é (e o que não é)',texto:'Identidade visual não é contratar um designer caro ou fazer um manual de marca de 40 páginas. É ter consistência visual suficiente para que, quando alguém veja o seu post, reconheça que é o seu perfil antes mesmo de ler o nome. Cores, fontes e estilo de imagem repetidos de forma consistente já criam essa percepção.'},
+        {titulo:'Por que identidade visual importa para o algoritmo',texto:'Quando o usuário reconhece o seu perfil nos primeiros frames de um vídeo ou nos primeiros segundos de um carrossel, ele já tem um predisposição para assistir. Reconhecimento visual cria familiaridade, e familiaridade aumenta a taxa de retenção. Isso é um sinal positivo para o algoritmo.'},
+        {titulo:'Como criar uma identidade visual mínima sem gastar nada',texto:'Escolha duas ou três cores principais. Escolha uma fonte para textos em carrossel. Defina um estilo de iluminação para os vídeos (natural ou artificial, ambiente claro ou escuro). Mantenha esses três elementos consistentes e você já tem uma identidade visual funcional.'},
+        {titulo:'A identidade visual do social media também conta',texto:'Como social media, o seu próprio perfil é a sua vitrine. A consistência visual do seu perfil é a prova de que você sabe fazer isso. Se o seu perfil for visualmente inconsistente, é difícil vender esse serviço para outros. Cuide do visual do seu próprio perfil com a mesma atenção que daria ao de um cliente.'},
+        {titulo:'Como esse tema conecta ao seu serviço',texto:'Ao criar carrosseis para um cliente, você naturalmente aplica a identidade visual dele. Ao mencionar isso no conteúdo, você mostra que o seu serviço vai além do texto: considera a apresentação visual do que é produzido.'}
+      ],
+      dica:'Esse tema funciona muito bem como vídeo mostrando o seu próprio perfil como exemplo de identidade visual consistente. Use o seu perfil como prova do que você ensina.'
+    },
+    carrossel:{
+      objetivo:'Ensinar sobre identidade visual de forma acessível e mostrar que o seu trabalho considera estética.',
+      slides:[
+        {label:'Capa',text:'Você não precisa de designer caro para ter identidade visual. Precisa de consistência.',tip:''},
+        {label:'Slide 2',text:'Identidade visual é quando o seguidor reconhece o seu post antes mesmo de ler o nome. É a consistência de cores, fontes e estilo de imagem.',tip:''},
+        {label:'Slide 3',text:'Por que isso importa: quando o usuário reconhece o seu perfil nos primeiros frames, ele tem predisposição para assistir. Familiaridade aumenta retenção.',tip:''},
+        {label:'Slide 4 — Passo 1',text:'Escolha duas ou três cores principais para o seu perfil. Use sempre as mesmas em todos os carrosseis e capas.',tip:''},
+        {label:'Slide 5 — Passo 2',text:'Escolha uma fonte para textos em carrossel. Consistência de fonte já cria identidade visual instantânea.',tip:''},
+        {label:'Slide 6 — Passo 3',text:'Defina um estilo de iluminação para os vídeos: luz natural, ambiente claro, sempre o mesmo cenário. Isso também é identidade.',tip:''},
+        {label:'Slide 7 — CTA',text:'Quando eu crio os carrosseis para o seu perfil, mantenho a identidade visual dele. Me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Eu crio os carrosseis respeitando a identidade visual do seu perfil.',copy:'"Me chama no direct. Carrossel com identidade visual consistente."'}
+    },
+    video:{
+      objetivo:'Mostrar a sua própria identidade visual como prova e ensinar de forma prática.',
+      duracao:'40 a 55 segundos',
+      gancho:{texto:'Você não precisa de designer para ter identidade visual. Três decisões simples já resolvem isso.',dica:'Promessa de simplicidade. Remove a barreira de entrada do tema.'},
+      desenvolvimento:[
+        {bloco:'O que é identidade visual na prática (15 seg)',texto:'É quando o seu seguidor reconhece o seu post antes de ler o nome. Cores, fonte e estilo de iluminação consistentes já criam essa percepção.'},
+        {bloco:'Os três elementos (15 seg)',texto:'Primeira decisão: duas ou três cores principais. Segunda: uma fonte para textos. Terceira: um estilo de iluminação para os vídeos. Mantenha os três e você tem identidade visual.'},
+      ],
+      cta:{texto:'Quando eu crio os carrosseis do seu perfil, mantenho a identidade visual. Me chama no direct.',dica:''},
+      dicas:'Grave num ambiente visualmente consistente para reforçar que você pratica o que ensina. Mostre o seu próprio perfil na tela se possível.'
+    },
+    legenda:'Identidade visual não é luxo de marca grande.\n\nÉ quando o seu seguidor reconhece o seu post antes de ler o seu nome.\n\nTrês coisas que criam identidade visual sem gastar nada:\n🎨 Duas ou três cores principais sempre iguais\n✏️ Uma fonte para todos os textos\n💡 Um estilo de iluminação para os vídeos\n\nConsistência visual cria familiaridade. Familiaridade aumenta retenção. Retenção agrada o algoritmo.\n\nMe chama no direct. Eu crio os seus carrosseis com a identidade visual do seu perfil.',
+    hashtags:['#identidadevisual','#designparasocialmedia','#brandingdigital','#tiktoktips','#instagramdicas','#socialmedia','#marketingdigital','#conteudodigital','#dicasdedesign','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Construir reconhecimento de marca e aumentar retenção',
+      items:[
+        {nivel:'ruim',formato:'Conteúdo sem padrão visual',icone:'🎲',desc:'Perfil sem identidade visual consistente dificulta o reconhecimento e a fidelização. O usuário não associa o conteúdo a você. Cada post parece vir de um perfil diferente. Isso prejudica o engajamento e a autoridade a longo prazo.'},
+        {nivel:'bom',formato:'Templates de carrossel com cores fixas',icone:'📑',desc:'Usar templates com cores e fontes fixas já cria uma identidade visual funcional para os carrosseis. O feed fica coeso e o reconhecimento começa a se formar. Bom ponto de partida para qualquer perfil.'},
+        {nivel:'excelente',formato:'Identidade visual integrada em todos os formatos',icone:'🎨',desc:'Quando a identidade visual é aplicada de forma consistente em vídeos, carrosseis e Stories (mesmas cores, mesma fonte, mesmo cenário, mesma iluminação), o perfil transmite profissionalismo instantâneo. O algoritmo e o seguidor reagem melhor a perfis que parecem organizados.'}
+      ],
+      fonte:'Fonte: iComunicação (fatores de retenção Instagram 2025), Container Criativo (tendências visuais 2025).'
+    }
+  },
+  {
+    day:14, type:'carrossel',
+    theme:'O que é funil de vendas nas redes sociais e como aplicar no seu perfil',
+    sobre:{
+      intro:'Funil de vendas é um conceito do marketing que parece técnico mas tem uma aplicação muito clara e prática nas redes sociais. Ao explicar isso de forma simples, você mostra que o seu trabalho é parte de uma estratégia maior, não só produção de conteúdo.',
+      paras:[
+        {titulo:'O que é o funil de vendas em linguagem simples',texto:'Funil de vendas é a jornada que o cliente percorre desde o momento em que não te conhece até o momento em que compra de você. Nas redes sociais, esse funil tem três etapas principais: descoberta (a pessoa te encontra), consideração (ela começa a te seguir e acompanhar) e conversão (ela se torna cliente).'},
+        {titulo:'Como cada tipo de conteúdo corresponde a uma etapa do funil',texto:'Conteúdo de topo de funil (vídeo com gancho forte, carrossel educativo) serve para atrair pessoas que ainda não te conhecem. Conteúdo de meio de funil (bastidor, história pessoal, processo de trabalho) serve para construir confiança com quem já te segue. Conteúdo de fundo de funil (CTA direto, prova social, serviços) serve para converter quem já confia em você.'},
+        {titulo:'Por que a maioria dos perfis só usa um tipo de conteúdo',texto:'A maioria dos perfis fica preso em um dos extremos: ou só posta conteúdo educativo (fica no topo do funil e nunca converte) ou só posta conteúdo de venda (afasta quem ainda está na fase de descoberta). O equilíbrio entre os três tipos é o que faz um perfil crescer e converter ao mesmo tempo.'},
+        {titulo:'Como aplicar na prática sem precisar dominar todo o marketing',texto:'Na prática, você não precisa pensar em "funil" o tempo todo. Basta garantir que cada semana tenha pelo menos: um post que atrai (alcance), um post que humaniza (conexão) e um post que vende (conversão). Esse equilíbrio simples já funciona muito bem para a maioria dos perfis.'},
+        {titulo:'Como esse conceito eleva o valor do seu serviço',texto:'Ao mostrar que você entende de funil de vendas e aplica esse conceito no planejamento de conteúdo, você demonstra que o seu trabalho está conectado ao objetivo comercial do cliente. Você não está só fazendo posts: está construindo uma estratégia de aquisição de clientes.'}
+      ],
+      dica:'Esse é um dos temas com maior potencial de marcar um amigo nos comentários porque as pessoas pensam em empreendedores que precisam ouvir isso. Incentive essa ação no CTA.'
+    },
+    carrossel:{
+      objetivo:'Mostrar visão estratégica de marketing e conectar planejamento de conteúdo a resultado comercial.',
+      slides:[
+        {label:'Capa',text:'O que é funil de vendas nas redes sociais e como usar no seu perfil (sem precisar ser especialista em marketing)',tip:''},
+        {label:'Slide 2',text:'Funil de vendas é a jornada do cliente: do "nunca ouvi falar" até "quero comprar". Nas redes sociais, ele tem 3 etapas.',tip:''},
+        {label:'Slide 3 — Etapa 1: Descoberta',text:'A pessoa te encontra pela primeira vez. Conteúdo que funciona aqui: vídeo com gancho forte, carrossel educativo, uso de tendências. Objetivo: atrair.',tip:''},
+        {label:'Slide 4 — Etapa 2: Consideração',text:'A pessoa já te segue e está te observando. Conteúdo que funciona aqui: bastidor, história pessoal, processo de trabalho. Objetivo: construir confiança.',tip:''},
+        {label:'Slide 5 — Etapa 3: Conversão',text:'A pessoa já confia em você. Conteúdo que funciona aqui: CTA direto, prova social, apresentação do serviço. Objetivo: converter em cliente.',tip:''},
+        {label:'Slide 6 — A regra simples',text:'Cada semana: um post que atrai, um post que humaniza, um post que vende. Esse equilíbrio já é suficiente para um perfil crescer e converter.',tip:''},
+        {label:'Slide 7 — CTA',text:'Eu planejo o seu conteúdo pensando no funil. Me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Eu planejo conteúdo com estratégia de funil.',copy:'"Me chama no direct. Conteúdo alinhado com estratégia de vendas."'}
+    },
+    video:{
+      objetivo:'Explicar funil de forma simples e mostrar aplicação prática no planejamento de conteúdo.',
+      duracao:'50 a 60 segundos',
+      gancho:{texto:'Você posta muito conteúdo educativo mas não converte em cliente? Pode ser um problema de funil.',dica:'Fala direto com quem está frustrado com a falta de conversão.'},
+      desenvolvimento:[
+        {bloco:'O que é funil (15 seg)',texto:'Funil é a jornada do cliente: descoberta, consideração e conversão. Cada etapa pede um tipo diferente de conteúdo.'},
+        {bloco:'Aplicação prática (20 seg)',texto:'Por semana: um post que atrai (conteúdo educativo com alcance), um post que humaniza (bastidor ou história), um post que vende (CTA direto). Esse equilíbrio sozinho já muda o resultado do perfil.'},
+      ],
+      cta:{texto:'Eu planejo o conteúdo do seu perfil pensando nesse funil. Me chama no direct.',dica:''},
+      dicas:'Tom de estrategista. Mostre que você pensa em resultado, não só em posts.'
+    },
+    legenda:'Você posta todo dia mas não converte em cliente?\n\nO problema pode ser que o seu perfil está todo num nível só do funil.\n\nFunil nas redes sociais tem 3 etapas:\n🔍 Descoberta: conteúdo que atrai quem não te conhece\n🤝 Consideração: conteúdo que constrói confiança\n💰 Conversão: conteúdo que pede a ação\n\nA regra simples: toda semana, um post para cada etapa.\n\nIsso sozinho já muda o resultado do perfil.\n\nMe chama no direct. Eu planejo o seu conteúdo com essa estratégia.',
+    hashtags:['#funildevendas','#estrategiadigital','#marketingdigital','#conteudoestragico','#socialmedia','#tiktokestrategia','#instagrammarketing','#conversao','#dicasdevendas','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Converter seguidores em clientes através das redes sociais',
+      items:[
+        {nivel:'ruim',formato:'Só posts educativos sem CTA de venda',icone:'📚',desc:'Perfis que só publicam conteúdo educativo ficam presos no topo do funil. Educam muito, constroem autoridade, mas nunca convertem porque nunca pedem nada. O seguidor aprende, gosta, mas não tem o próximo passo claro.'},
+        {nivel:'bom',formato:'Stories com CTA direto',icone:'📱',desc:'Stories com CTA direto são eficazes para conversão porque chegam para quem já te segue (audiência quente). Bom para fundo de funil, mas não atrai novos seguidores. Funciona bem quando combinado com conteúdo de feed.'},
+        {nivel:'excelente',formato:'Mix de vídeo (topo) + carrossel (meio) + Stories (fundo)',icone:'🔄',desc:'A estratégia mais eficaz é usar cada formato para a etapa do funil onde ele se destaca: vídeo para descoberta e alcance, carrossel para educação e construção de autoridade, Stories para conversão direta. Cada formato no lugar certo multiplica o resultado.'}
+      ],
+      fonte:'Fonte: Sebrae-RN (funil de vendas TikTok e Instagram 2025), Amper (formatos e conversão 2024).'
+    }
+  },
+  {
+    day:18, type:'carrossel',
+    theme:'Como responder comentários e mensagens para transformar engajamento em cliente',
+    sobre:{
+      intro:'Criadores de conteúdo investem horas na produção mas ignoram os comentários. É um dos erros mais comuns e mais caros. Ao ensinar como transformar engajamento em conversa e conversa em cliente, você demonstra que entende de relacionamento e conversão, não só de produção.',
+      paras:[
+        {titulo:'Por que responder comentários é mais estratégico do que parece',texto:'Quando você responde um comentário, acontecem três coisas positivas ao mesmo tempo: o algoritmo interpreta como engajamento adicional e distribui mais o post; a pessoa que recebeu a resposta se sente vista e tem mais probabilidade de voltar; e quem está lendo os comentários vê que você interage, o que aumenta a confiança no perfil.'},
+        {titulo:'Como transformar um comentário em conversa no direct',texto:'Quando alguém faz uma pergunta nos comentários que merece uma resposta mais longa, responda brevemente e complete com "te mandei um direct com mais detalhes". Isso transforma um comentário público em uma conversa privada, que é o ambiente onde a venda acontece com muito mais facilidade.'},
+        {titulo:'O que responder em comentários negativos ou críticos',texto:'Comentários negativos são oportunidades disfarçadas. Quando você responde de forma calma, construtiva e sem defensividade, você demonstra maturidade profissional para todos que estão lendo. Isso aumenta muito mais a confiança do público do que qualquer post poderia.'},
+        {titulo:'Como usar as respostas de DM para criar conteúdo',texto:'As perguntas mais frequentes que chegam nos directs são pautas prontas. Toda vez que você responder a mesma pergunta mais de duas vezes no direct, transforme isso em um post. Você cria conteúdo relevante, economiza tempo de responder individualmente e mostra que está conectado com o que o público quer saber.'},
+        {titulo:'Como isso conecta ao serviço de acompanhamento que você oferece',texto:'O acompanhamento básico que você oferece pode incluir orientação sobre como o cliente deve responder comentários e directs. Isso é um diferencial que a maioria dos social medias não menciona, e pode ser um argumento de venda muito eficaz.'}
+      ],
+      dica:'Esse tema tem potencial de virar uma série: comentários, stories, directs. Cada um pode ser um post separado. Plante a semente nos comentários ou Stories perguntando sobre qual desses temas as pessoas têm mais dúvida.'
+    },
+    carrossel:{
+      objetivo:'Ensinar sobre relacionamento com a audiência e mostrar que você pensa em conversão.',
+      slides:[
+        {label:'Capa',text:'Você cria o conteúdo mas ignora os comentários? Está perdendo a parte mais valiosa.',tip:''},
+        {label:'Slide 2',text:'Quando você responde um comentário, o algoritmo soma isso como engajamento adicional e distribui mais o post. É engajamento de graça.',tip:''},
+        {label:'Slide 3',text:'Quando alguém faz uma pergunta longa nos comentários: responda brevemente e diga "te mandei um direct com mais detalhes". Conversa no direct converte muito mais do que comentário público.',tip:''},
+        {label:'Slide 4',text:'Comentário negativo ou crítico? Responda com calma e sem defensividade. Todos que estão lendo vão perceber a sua maturidade. Isso vale mais do que dez posts sobre o tema.',tip:''},
+        {label:'Slide 5',text:'As perguntas mais frequentes nos directs são pautas prontas. Se você respondeu a mesma pergunta três vezes no direct esta semana, transforme isso em um post.',tip:''},
+        {label:'Slide 6',text:'Engajamento não é curtida. Engajamento é conversa. E conversa é o começo de qualquer venda.',tip:''},
+        {label:'Slide 7 — CTA',text:'Me chama no direct. Posso te orientar sobre como usar o relacionamento com a audiência a favor da venda.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Estratégia de relacionamento faz parte do meu trabalho.',copy:'"Me chama no direct. Vamos transformar engajamento em cliente."'}
+    },
+    video:{
+      objetivo:'Mostrar que venda acontece na conversa, não só no post.',
+      duracao:'40 a 50 segundos',
+      gancho:{texto:'Você cria conteúdo incrível e não responde os comentários. Está jogando fora a parte mais valiosa.',dica:'Tom de revelação importante. Gera um pouco de culpa saudável.'},
+      desenvolvimento:[
+        {bloco:'Por que responder importa (15 seg)',texto:'Cada resposta que você dá em um comentário é mais engajamento para o algoritmo distribuir. E a pessoa que recebeu a resposta tem muito mais chance de se tornar cliente.'},
+        {bloco:'A estratégia de transformar em direct (10 seg)',texto:'Quando a pergunta é longa, responda brevemente no comentário e convide para o direct. É lá que a venda acontece.'},
+      ],
+      cta:{texto:'Me chama no direct. Falo sobre como usar relacionamento para vender.',dica:''},
+      dicas:'Tom de insight revelador. Fale como se estivesse compartilhando uma descoberta importante.'
+    },
+    legenda:'Você passa horas criando conteúdo e depois ignora os comentários.\n\nIsso é um erro que custa caro.\n\nCada resposta que você dá é engajamento adicional para o algoritmo. E a pessoa que recebeu a resposta está muito mais perto de se tornar cliente do que qualquer seguidor anônimo.\n\nTrês coisas para começar a fazer:\n1. Responder todos os comentários nas primeiras 2 horas depois de postar\n2. Perguntas longas: responder brevemente e convidar para o direct\n3. Perguntas repetidas no direct: transformar em post\n\nEngajamento é conversa. E conversa é o início de qualquer venda.\n\nMe chama no direct.',
+    hashtags:['#engajamento','#relacionamentocomoclientecomopublico','#socialmediatips','#marketingdigital','#vendas','#conversao','#tiktokestrategia','#instagramdicas','#atendimentoaocliente','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Gerar conversas no direct e construir relacionamento',
+      items:[
+        {nivel:'ruim',formato:'Post que não incentiva interação',icone:'🔕',desc:'Qualquer post que termina sem uma pergunta, sem um CTA de interação ou sem um convite explícito para comentar perde a oportunidade de criar conversa. Conteúdo sem incentivo à interação gera visualização passiva, que é o sinal mais fraco que você pode dar ao algoritmo.'},
+        {nivel:'bom',formato:'Carrossel com pergunta no último slide',icone:'📑',desc:'Terminar o carrossel com uma pergunta direta para o público é uma boa estratégia para gerar comentários. Funcionam bem e são simples de implementar. Mas o engajamento gerado fica nos comentários, que são mais difíceis de converter.'},
+        {nivel:'excelente',formato:'Stories com caixinha de perguntas',icone:'📱',desc:'Stories com caixinha de perguntas é o formato que mais diretamente gera conversas no direct. A pessoa responde, a resposta chega como direct para você, e você já tem uma conversa privada aberta. É o caminho mais curto e natural do engajamento para a venda.'}
+      ],
+      fonte:'Fonte: Linkme.bio (estratégias de engajamento Instagram 2025), iComunicação (relacionamento e algoritmo 2025).'
+    }
+  },
+  {
+    day:19, type:'video',
+    theme:'Como capturar atenção nos primeiros 3 segundos em qualquer plataforma',
+    sobre:{
+      intro:'Atenção é o recurso mais escasso da internet. Ao ensinar como capturá-la de forma técnica e prática, você demonstra domínio sobre o elemento mais crítico de qualquer conteúdo de vídeo. Esse tema é diretamente ligado ao serviço de roteiro que você oferece.',
+      paras:[
+        {titulo:'Por que 3 segundos é tudo que você tem',texto:'O usuário médio gasta menos de 3 segundos decidindo se vai assistir um vídeo ou rolar o feed. Nesse intervalo, o cérebro faz uma avaliação inconsciente baseada em três elementos: o que está sendo mostrado (visual), o que está sendo dito (gancho verbal), e a promessa implícita de o que vem a seguir. Se qualquer um desses três elementos falhar, o usuário vai embora.'},
+        {titulo:'Os erros mais comuns nos primeiros 3 segundos',texto:'Começar com "olá pessoal, bem vindos ao meu canal". Começar com uma introdução sobre quem você é. Começar com música de introdução sem nenhuma fala. Começar com um fundo preto ou uma cena sem interesse visual. Todos esses erros desperdiçam os segundos mais valiosos do vídeo.'},
+        {titulo:'O que o gancho precisa fazer visualmente',texto:'Nos primeiros frames do vídeo, a imagem já precisa ser interessante. Ação acontecendo, expressão facial forte, texto em tela com a promessa do conteúdo. O TikTok e o Instagram medem quanto tempo passa antes de a primeira ação visual acontecer. Quanto mais rápido, melhor.'},
+        {titulo:'A estrutura de gancho verbal mais eficaz',texto:'O gancho verbal mais eficaz combina um problema reconhecível com uma promessa de solução em uma única frase. "Você está [fazendo X errado]. Aqui está o que funciona." Essa estrutura aciona o instinto de curiosidade e o medo de estar perdendo algo importante ao mesmo tempo.'},
+        {titulo:'Como você aplica isso nos roteiros que escreve',texto:'Ao escrever o roteiro de um cliente, a primeira coisa que você faz é o gancho. E um gancho bem escrito pode ser a diferença entre um vídeo com 500 visualizações e um com 50 mil. Ao mostrar esse nível de atenção ao detalhe no seu conteúdo, você justifica o valor do serviço de roteiro.'}
+      ],
+      dica:'Esse tema funciona muito bem como vídeo porque você pode usar o próprio vídeo como exemplo prático do que está ensinando. Abra o vídeo já com o gancho aplicado e mencione isso no desenvolvimento.'
+    },
+    carrossel:{
+      objetivo:'Ensinar técnica de gancho e mostrar que seu roteiro tem base técnica sólida.',
+      slides:[
+        {label:'Capa',text:'3 segundos. É tudo que você tem para capturar atenção antes que o usuário role o feed.',tip:''},
+        {label:'Slide 2',text:'O erro mais comum: começar com "olá pessoal, bem vindos". Isso desperdiça os segundos mais valiosos do vídeo.',tip:''},
+        {label:'Slide 3',text:'Erro 2: tela preta ou sem ação nos primeiros frames. O visual precisa ser interessante imediatamente.',tip:''},
+        {label:'Slide 4 — O que funciona',text:'Gancho verbal eficaz: "[problema que o público tem]. Aqui está o que funciona." Uma frase. Direto ao ponto.',tip:''},
+        {label:'Slide 5',text:'Visualmente: já apareça em tela com expressão de quem vai dizer algo importante, ou coloque o texto do gancho na tela desde o primeiro frame.',tip:''},
+        {label:'Slide 6',text:'A melhor prova? Este vídeo que você está assistindo. O gancho foi aplicado antes de eu me apresentar. E você continuou.',tip:''},
+        {label:'Slide 7 — CTA',text:'Eu escrevo ganchos pensados assim em cada roteiro. Me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Eu escrevo roteiros com ganchos que capturam atenção.',copy:'"Me chama no direct. Roteiros com ganchos técnicos que funcionam."'}
+    },
+    video:{
+      objetivo:'Ensinar captura de atenção usando o próprio vídeo como exemplo ao vivo.',
+      duracao:'40 a 55 segundos',
+      gancho:{texto:'Você tem 3 segundos antes que o usuário role o feed. Vou te mostrar exatamente o que fazer nesse tempo.',dica:'Use a abertura do próprio vídeo como demonstração do que está ensinando.'},
+      desenvolvimento:[
+        {bloco:'Os erros (15 seg)',texto:'Erro 1: começar com apresentação. Erro 2: tela preta no começo. Erro 3: informação que não promete nada. Cada um desses desperdiça os segundos mais valiosos do vídeo.'},
+        {bloco:'O que funciona (15 seg)',texto:'Comece com o problema do seu público em uma frase. Visual interessante desde o primeiro frame. Prometa algo antes de se apresentar. Esse padrão funciona em qualquer nicho.'},
+      ],
+      cta:{texto:'Eu aplico isso em cada roteiro que escrevo. Me chama no direct.',dica:'Mencione que o próprio vídeo foi um exemplo do que você está ensinando.'},
+      dicas:'Comece sem apresentação, direto no gancho. No meio do vídeo você pode mencionar "esse vídeo começou já com o gancho aplicado. Você percebeu?" Isso é muito eficaz para demonstrar a técnica na prática.'
+    },
+    legenda:'Você tem 3 segundos.\n\nÉ tudo que o algoritmo e o usuário precisam para decidir se o seu vídeo merece atenção.\n\nO que não funciona nos primeiros 3 segundos:\n❌ "Olá pessoal, bem vindos"\n❌ Tela preta ou sem ação\n❌ Introdução sobre quem você é\n\nO que funciona:\n✅ O problema do público em uma frase\n✅ Visual interessante desde o primeiro frame\n✅ Promessa do que vem a seguir\n\nEste vídeo começou assim. Você está aqui porque funcionou.\n\nMe chama no direct. Eu escrevo esses ganchos para você.',
+    hashtags:['#gancho','#tiktokdicas','#atencao','#reels','#videomarketing','#socialmediatips','#marketingdigital','#roteiro','#crescimentoorganico','#conteudoestragico'],
+    qualidade:{
+      objetivo:'Maximizar retenção nos primeiros segundos do vídeo',
+      items:[
+        {nivel:'ruim',formato:'Começar o vídeo com apresentação pessoal',icone:'👋',desc:'Abrir o vídeo com "olá pessoal, sou fulana de tal e hoje vou falar sobre..." é a forma mais eficaz de perder o espectador nos primeiros 3 segundos. O usuário já viu centenas de vídeos assim e o cérebro associa automaticamente a longas introduções e rola o feed.'},
+        {nivel:'bom',formato:'Começar com o problema do público',icone:'❓',desc:'Começar com uma pergunta ou afirmação sobre o problema do público é muito mais eficaz. Gera identificação imediata e prende a atenção. Funciona bem na maioria dos casos.'},
+        {nivel:'excelente',formato:'Começar com problema + elemento visual forte',icone:'🎬',desc:'A combinação mais eficaz é: gancho verbal (problema em uma frase) + elemento visual forte no mesmo momento (expressão intensa, texto na tela, ação visual). Os dois canais (auditivo e visual) capturando atenção ao mesmo tempo é o que tem maior taxa de retenção nos primeiros 3 segundos.'}
+      ],
+      fonte:'Fonte: HubSpot (taxa de retenção vídeos curtos), Amper (técnicas de engajamento TikTok e Instagram 2024).'
+    }
+  },
+  {
+    day:20, type:'carrossel',
+    theme:'Por que postar nos horários certos faz diferença no seu alcance',
+    sobre:{
+      intro:'Horário de publicação é um dos fatores mais simples de otimizar e um dos mais ignorados. Ao ensinar sobre isso de forma prática, você entrega valor imediato e mostra que o planejamento de conteúdo considera detalhes que vão além do óbvio.',
+      paras:[
+        {titulo:'Por que o horário importa para o algoritmo',texto:'O algoritmo do TikTok e do Instagram mede engajamento nas primeiras horas após a publicação para decidir se o conteúdo vai ser distribuído para mais pessoas. Se você posta quando a maioria do seu público está dormindo, o engajamento inicial é baixo e o algoritmo interpreta como conteúdo pouco interessante. Resultado: menos alcance.'},
+        {titulo:'Os horários com melhor desempenho em geral',texto:'Para perfis brasileiros, os horários com melhor desempenho tendem a ser: manhã entre 8h e 10h (quando as pessoas verificam o celular antes ou durante o trabalho), horário de almoço entre 12h e 14h, e noite entre 19h e 22h. Mas o mais importante é testar e usar os insights do seu próprio perfil, que vão mostrar quando a sua audiência específica está mais ativa.'},
+        {titulo:'A diferença entre postar no horário certo e postar qualquer hora',texto:'Dois posts com a mesma qualidade publicados em horários diferentes podem ter resultados completamente diferentes. O que foi publicado no horário de pico tem mais visualizações nas primeiras horas, mais engajamento, e o algoritmo distribui para uma audiência maior. O que foi publicado às 3 da manhã raramente tem alcance equivalente.'},
+        {titulo:'Como encontrar o horário ideal do seu perfil',texto:'No Instagram: vá em Configurações > Insights > Público > Horários mais ativos. No TikTok: acesse o Creator Center e veja as análises de quando os seus seguidores estão online. Essa informação é gratuita e está disponível para qualquer conta profissional.'},
+        {titulo:'Como isso faz parte do seu trabalho como social media',texto:'Ao planejar o calendário do cliente, você considera os horários de publicação. Isso é parte do trabalho estratégico que você faz. Ao mencionar isso no conteúdo, você mostra que o planejamento que você oferece é completo, não só temático.'}
+      ],
+      dica:'Esse post funciona muito bem como isca para perguntas nos comentários do tipo "qual é o melhor horário para o meu nicho?". Responda de forma consultiva e convide para o direct para uma conversa mais aprofundada.'
+    },
+    carrossel:{
+      objetivo:'Ensinar sobre horários de publicação e mostrar que o seu planejamento considera esse detalhe.',
+      slides:[
+        {label:'Capa',text:'Você pode ter o melhor conteúdo do dia e perder alcance por um motivo simples: horário errado.',tip:''},
+        {label:'Slide 2',text:'O algoritmo mede o engajamento nas primeiras horas após a publicação. Se ninguém está online quando você posta, o engajamento inicial é baixo e o algoritmo não distribui.',tip:''},
+        {label:'Slide 3 — Horários com melhor desempenho',text:'Para perfis brasileiros: manhã (8h às 10h), horário de almoço (12h às 14h) e noite (19h às 22h). Mas o melhor horário é o que os insights do seu perfil indicam.',tip:''},
+        {label:'Slide 4 — Como descobrir no Instagram',text:'Configurações > Insights > Público > Horários mais ativos. Gratuito, disponível para qualquer conta profissional.',tip:''},
+        {label:'Slide 5 — Como descobrir no TikTok',text:'Creator Center > Análises > Seguidores > Quando seus seguidores estão ativos. Mesmo processo, mesma facilidade.',tip:''},
+        {label:'Slide 6',text:'Poste nos horários de pico por 30 dias e compare com os resultados anteriores. A diferença vai aparecer nos números.',tip:''},
+        {label:'Slide 7 — CTA',text:'Quando planejo o calendário do meu cliente, incluo os melhores horários de publicação. Me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. O planejamento inclui estratégia de horários de publicação.',copy:'"Me chama no direct. Planejamento completo para o seu perfil."'}
+    },
+    video:{
+      objetivo:'Ensinar algo prático e acionável que mostra atenção ao detalhe.',
+      duracao:'35 a 45 segundos',
+      gancho:{texto:'Você posta na hora que é mais conveniente para você. O problema é que pode não ser a hora mais conveniente para o seu público.',dica:'Gancho simples mas muito eficaz. Todo mundo se reconhece nisso.'},
+      desenvolvimento:[
+        {bloco:'Por que horário importa (10 seg)',texto:'O algoritmo mede o engajamento nas primeiras horas. Se seu público está dormindo quando você posta, o engajamento é baixo e o algoritmo não distribui.'},
+        {bloco:'Como descobrir o horário certo (15 seg)',texto:'Instagram e TikTok mostram de graça quando os seus seguidores estão mais ativos. Dois cliques nos insights do perfil. Use essa informação.'},
+      ],
+      cta:{texto:'Incluo horários de publicação no planejamento que faço. Me chama no direct.',dica:''},
+      dicas:'Vídeo curto e direto. Esse tema não precisa de muito desenvolvimento.'
+    },
+    legenda:'Você pode ter o melhor conteúdo do dia.\n\nMas se postar às 3 da manhã, o algoritmo vai interpretrar como pouco interessante porque ninguém engajou nas primeiras horas.\n\nO algoritmo do TikTok e do Instagram mede o engajamento inicial para decidir se vai distribuir mais.\n\nHorários com melhor desempenho para perfis brasileiros:\n🕗 Manhã: 8h às 10h\n🕛 Almoço: 12h às 14h\n🕖 Noite: 19h às 22h\n\nMas o melhor horário é o que os insights do seu perfil mostram.\n\nMe chama no direct. Incluo isso no planejamento.',
+    hashtags:['#horariodepublicacao','#algoritmotiktok','#algortimoinstagram','#socialmediatips','#marketingdigital','#crescimentoorganico','#dicasdeconteudo','#instagramdicas','#tiktokestrategia','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Otimizar alcance através de timing de publicação',
+      items:[
+        {nivel:'ruim',formato:'Postar em horário aleatório sem análise',icone:'🎲',desc:'Publicar conteúdo sem considerar quando o público está ativo desperdiça o potencial de qualquer post. O engajamento nas primeiras horas é o principal sinal que o algoritmo usa para decidir a distribuição. Ignorar isso é trabalhar contra o próprio conteúdo.'},
+        {nivel:'bom',formato:'Postar nos horários de pico genéricos',icone:'📊',desc:'Usar os horários de pico conhecidos (manhã, almoço, noite) já é muito melhor do que postar aleatoriamente. É uma boa prática de base que funciona para a maioria dos perfis.'},
+        {nivel:'excelente',formato:'Postar no horário específico do seu público (via Insights)',icone:'📱',desc:'Usar os insights do seu próprio perfil para identificar quando a sua audiência específica está mais ativa e postar consistentemente nesses horários é a estratégia mais precisa e eficaz. Combina as boas práticas gerais com os dados reais do seu perfil.'}
+      ],
+      fonte:'Fonte: Instagram Insights (dados de horário de audiência), TikTok Creator Center (análise de seguidores).'
+    }
+  },
+  {
+    day:21, type:'carrossel',
+    theme:'Colaboração entre criadores: como parcerias aumentam o seu alcance organicamente',
+    sobre:{
+      intro:'Colaboração é uma das estratégias de crescimento mais subestimadas no TikTok e no Instagram. Para quem está começando e tem audiência pequena, colaborar com outros criadores é uma das formas mais eficazes de crescer sem gastar nada.',
+      paras:[
+        {titulo:'Por que colaboração funciona tão bem para perfis em crescimento',texto:'Quando dois criadores colaboram, cada um leva o conteúdo para a sua audiência. Isso significa que você dobra o alcance sem precisar criar mais conteúdo. Para perfis menores, encontrar parceiros com audiências complementares (não concorrentes) é uma das formas mais rápidas de crescer organicamente.'},
+        {titulo:'Como funciona a colaboração no Instagram',texto:'O Instagram tem uma funcionalidade de "publicação colaborativa" que permite que dois criadores publiquem o mesmo conteúdo nas duas contas ao mesmo tempo. O post aparece nos feeds dos seguidores de ambos e as métricas são compartilhadas. É uma das ferramentas mais poderosas de crescimento orgânico disponíveis gratuitamente.'},
+        {titulo:'Como funciona a colaboração no TikTok',texto:'No TikTok, o formato mais comum de colaboração é o Dueto ou o Stitch, onde você responde ou complementa o vídeo de outro criador. Mas a colaboração presencial (dois criadores no mesmo vídeo) tem resultado ainda maior porque atinge as duas audiências de forma completa.'},
+        {titulo:'Como escolher o parceiro certo',texto:'O parceiro ideal não é um concorrente direto, mas alguém que atende o mesmo público com um serviço ou conteúdo diferente. Por exemplo: como social media, você poderia colaborar com um fotógrafo, um copywriter, um coach de negócios ou um especialista em tráfego pago. Audiências complementares geram crescimento mútuo.'},
+        {titulo:'Como mencionar isso no contexto do seu serviço',texto:'Ao sugerir colaborações para um cliente, você está oferecendo uma estratégia de crescimento que vai além da produção de conteúdo regular. Isso demonstra que você pensa no crescimento do perfil de forma ampla, não só nas publicações individuais.'}
+      ],
+      dica:'Use esse tema também para explorar colaborações para o seu próprio perfil. Colaborar com outros social medias, designers ou copywriters que atendem o mesmo público pode acelerar muito o seu crescimento.'
+    },
+    carrossel:{
+      objetivo:'Ensinar sobre colaborações e mostrar visão estratégica de crescimento além do conteúdo individual.',
+      slides:[
+        {label:'Capa',text:'Uma das estratégias de crescimento mais subestimadas no TikTok e Instagram: colaboração.',tip:''},
+        {label:'Slide 2',text:'Quando você colabora com outro criador, você leva o seu conteúdo para a audiência dele. E ele leva o conteúdo dele para a sua. Dobro de alcance, mesmo esforço.',tip:''},
+        {label:'Slide 3 — No Instagram',text:'O Instagram tem publicação colaborativa: dois criadores publicam o mesmo post nas duas contas simultaneamente. O post aparece para os seguidores de ambos.',tip:''},
+        {label:'Slide 4 — No TikTok',text:'No TikTok, o Dueto e o Stitch levam o seu conteúdo para a audiência de outro criador. Mas a colaboração presencial (dois no mesmo vídeo) é ainda mais poderosa.',tip:''},
+        {label:'Slide 5 — Como escolher o parceiro',text:'Não procure concorrentes. Procure criadores que atendem o mesmo público com conteúdo diferente. Fotógrafo, copywriter, coach de negócios: audiências complementares.',tip:''},
+        {label:'Slide 6',text:'Colaboração certa = crescimento mútuo + autoridade por associação + conteúdo novo sem criar do zero.',tip:''},
+        {label:'Slide 7 — CTA',text:'Esse tipo de estratégia faz parte de como eu penso o crescimento do seu perfil. Me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Crescimento estratégico vai além dos posts individuais.',copy:'"Me chama no direct. Estratégia de crescimento para o seu perfil."'}
+    },
+    video:{
+      objetivo:'Mostrar que você pensa em crescimento de forma ampla e estratégica.',
+      duracao:'40 a 50 segundos',
+      gancho:{texto:'Você sabia que pode dobrar o seu alcance sem criar nenhum conteúdo novo? Colaboração é a resposta.',dica:'Promessa forte de resultado fácil. Gera curiosidade imediata.'},
+      desenvolvimento:[
+        {bloco:'Como funciona (15 seg)',texto:'Quando você colabora com outro criador, o conteúdo vai para as duas audiências. Instagram tem publicação colaborativa. TikTok tem Dueto e Stitch. Dobro de alcance com o mesmo conteúdo.'},
+        {bloco:'Como escolher (10 seg)',texto:'Procure criadores que atendem o mesmo público com conteúdo diferente. Audiências complementares crescem juntas.'},
+      ],
+      cta:{texto:'Essa é uma das estratégias que considero para o crescimento do seu perfil. Me chama no direct.',dica:''},
+      dicas:'Tom de estrategista que pensa além do óbvio. Mostre entusiasmo pelo tema.'
+    },
+    legenda:'Quer dobrar o alcance do seu conteúdo sem criar mais nada?\n\nCollaboração é a resposta.\n\nInstagram tem publicação colaborativa: dois criadores, um post, duas audiências.\n\nTikTok tem Dueto e Stitch: seu conteúdo na audiência de outro criador.\n\nA chave é encontrar parceiros com audiências complementares. Não concorrentes. Criadores que atendem o mesmo público com conteúdo diferente.\n\nCrescimento mútuo, sem gastar nada.\n\nEssa é uma das estratégias que uso para pensar no crescimento do seu perfil. Me chama no direct.',
+    hashtags:['#colaboracao','#parcerias','#crescimentoorganico','#tiktokcollaboration','#instagramcollab','#socialmedia','#marketingdigital','#alcance','#estrategiadigital','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Crescimento de audiência através de colaboração',
+      items:[
+        {nivel:'ruim',formato:'Mencionar colaboração só na legenda',icone:'📝',desc:'Citar colaboração apenas na legenda sem usar os recursos nativos de colaboração das plataformas é desperdiçar a oportunidade. O Instagram e o TikTok têm funcionalidades específicas para isso que amplificam o alcance de forma muito mais eficaz do que uma menção em texto.'},
+        {nivel:'bom',formato:'Dueto ou Stitch no TikTok',icone:'🔄',desc:'Dueto e Stitch são funcionalidades nativas que levam o conteúdo para as duas audiências. Funcionam bem para colaborações de conteúdo, mas o criador original precisa ter habilitado essa opção. Bom recurso, especialmente para comentar tendências ou responder conteúdo de outros criadores.'},
+        {nivel:'excelente',formato:'Publicação Colaborativa no Instagram',icone:'🤝',desc:'A publicação colaborativa do Instagram é o recurso mais poderoso para crescimento por colaboração. Ambas as contas publicam o mesmo conteúdo, ele aparece nos feeds dos dois perfis e as métricas são combinadas. Para perfis em crescimento, essa é uma das funcionalidades mais eficazes disponíveis gratuitamente.'}
+      ],
+      fonte:'Fonte: Container Criativo (funcionalidades Instagram 2025), Sebrae-RN (estratégias de crescimento 2025).'
+    }
+  },
+  {
+    day:25, type:'carrossel',
+    theme:'O que fazer quando o engajamento cai: 5 ações para recuperar o alcance',
+    sobre:{
+      intro:'Queda de engajamento acontece com todo mundo. Ao ensinar como diagnosticar e recuperar, você demonstra maturidade técnica e posiciona o seu acompanhamento como algo valioso para momentos de crise, não só para o planejamento regular.',
+      paras:[
+        {titulo:'Por que o engajamento cai e o que isso significa',texto:'Queda de engajamento pode ter várias causas: mudança no algoritmo, inconsistência no período anterior, conteúdo que não resonou com o público, ou simplesmente uma fase natural do ciclo de crescimento. O importante é não entrar em pânico e agir de forma estratégica.'},
+        {titulo:'O que não fazer quando o engajamento cai',texto:'Dois erros muito comuns: postar mais e com menos qualidade para "compensar" a queda (isso piora o problema) e parar de postar completamente por frustração (isso mata o perfil). Ambos são reações emocionais que pioram o problema técnico.'},
+        {titulo:'A primeira ação: analisar o que mudou',texto:'Olhe para os últimos 7 a 10 posts e identifique quando a queda começou. Algo mudou na forma de criar o conteúdo? Na frequência? No tema? No horário? A maioria das quedas tem uma causa identificável quando você olha para os dados com atenção.'},
+        {titulo:'Como recuperar o alcance de forma estratégica',texto:'Cinco ações práticas: (1) voltar para o formato e tema que mais performou no passado; (2) usar tendências atuais para aproveitar o boost do algoritmo; (3) intensificar Stories para manter o perfil ativo enquanto o feed se recupera; (4) colaborar com outro criador para alcançar uma audiência nova; (5) usar a caixinha de perguntas para entender o que o público quer ver.'},
+        {titulo:'Por que queda de engajamento não é o fim',texto:'Todo perfil passa por ciclos. O que separa quem cresce de quem desiste é a capacidade de atravessar as quedas com estratégia e continuar consistente. Um perfil que atravessa um período difícil e sai dele começa a construir uma base muito mais sólida.'}
+      ],
+      dica:'Esse tema é muito procurado por busca interna no TikTok e no Instagram. Use palavras-chave na legenda como "engajamento caiu", "alcance baixo" e "recuperar engajamento" para aumentar a descoberta orgânica.'
+    },
+    carrossel:{
+      objetivo:'Resolver uma dor específica e posicionar o acompanhamento como suporte em momentos de crise.',
+      slides:[
+        {label:'Capa',text:'Engajamento caiu? Não entra em pânico. 5 ações para recuperar o alcance.',tip:'Capa que fala direto com quem está passando por isso agora.'},
+        {label:'Slide 2',text:'Primeiro: o que NÃO fazer. Não poste mais com menos qualidade para compensar. E não pare de postar por frustração. Esses dois erros pioram o problema.',tip:''},
+        {label:'Slide 3 — Ação 1',text:'Analise quando a queda começou. Olhe para os últimos 10 posts. Algo mudou na frequência, no tema ou no horário? A maioria das quedas tem causa identificável.',tip:''},
+        {label:'Slide 4 — Ação 2',text:'Volte para o formato e tema que mais performou no passado. O algoritmo já mostrou que funciona para o seu perfil.',tip:''},
+        {label:'Slide 5 — Ação 3',text:'Use uma tendência atual. O TikTok e o Instagram dão boost para conteúdo em trend. Use a embalagem da tendência, mas coloque o seu conteúdo dentro dela.',tip:''},
+        {label:'Slide 6 — Ações 4 e 5',text:'Ação 4: Ative os Stories. Perfil ativo em Stories sinaliza para o algoritmo que você está presente. Ação 5: Colabore com outro criador para alcançar audiência nova.',tip:''},
+        {label:'Slide 7 — CTA',text:'Se o engajamento do seu perfil está caindo e você não sabe por onde começar, me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Vou analisar o que está acontecendo no seu perfil.',copy:'"Me chama no direct. Diagnóstico e estratégia de recuperação de alcance."'}
+    },
+    video:{
+      objetivo:'Oferecer solução prática para um problema urgente e posicionar o acompanhamento como valioso.',
+      duracao:'45 a 55 segundos',
+      gancho:{texto:'Engajamento caiu? Antes de entrar em pânico, faz essas 5 coisas.',dica:'Fala direto com quem está vivendo o problema agora. Muito eficaz.'},
+      desenvolvimento:[
+        {bloco:'O que não fazer (10 seg)',texto:'Não compensa postando mais com menos qualidade. E não para de postar por frustração. Esses dois erros prolongam o problema.'},
+        {bloco:'As 5 ações (25 seg)',texto:'Um: analise quando a queda começou. Dois: volte ao formato que mais performou. Três: use uma tendência atual. Quatro: intensifique os Stories. Cinco: colabore com outro criador.'},
+      ],
+      cta:{texto:'Se não sabe por onde começar, me chama no direct. Vou analisar o seu perfil.',dica:'Oferecer diagnóstico é um CTA muito poderoso para esse tipo de problema.'},
+      dicas:'Tom calmo e resolutivo. A pessoa que está assistindo está frustrada. Fale como quem tem solução, não como quem aumenta o problema.'
+    },
+    legenda:'Engajamento caiu. Acontece.\n\nO erro é entrar em pânico e postar mais com menos qualidade. Ou parar de postar por frustração. Os dois pioram o problema.\n\nO que fazer:\n\n1️⃣ Analise quando a queda começou\n2️⃣ Volte ao formato que mais performou no passado\n3️⃣ Use uma tendência atual para alcançar audiência nova\n4️⃣ Intensifique os Stories para manter o perfil ativo\n5️⃣ Colabore com outro criador\n\nQueda de engajamento é fase. Com estratégia, passa.\n\nSe precisar de ajuda para diagnosticar o seu perfil, me chama no direct.',
+    hashtags:['#engajamentocaiu','#recuperaralcance','#algoritmotiktok','#instagramdicas','#socialmediatips','#marketingdigital','#crescimentoorganico','#dicasdeconteudo','#redessociais','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Recuperar alcance e reativar o algoritmo',
+      items:[
+        {nivel:'ruim',formato:'Postar muito conteúdo rápido de baixa qualidade',icone:'📉',desc:'Quando o engajamento cai, a reação de postar mais e mais rápido para compensar piora o problema. Posts com baixo desempenho ensinam o algoritmo que o seu conteúdo não é bom. Isso cria um ciclo negativo difícil de reverter.'},
+        {nivel:'bom',formato:'Retomar o formato que mais performou',icone:'🔄',desc:'Voltar ao formato e tema que teve melhor desempenho historicamente é uma estratégia sólida de recuperação. O algoritmo já distribuiu bem esse tipo de conteúdo antes, então há uma base de reconhecimento que facilita a recuperação.'},
+        {nivel:'excelente',formato:'Combinar tendência atual + Stories intensificados',icone:'🚀',desc:'A combinação mais eficaz para recuperação rápida de alcance é usar tendências atuais (que recebem boost automático do algoritmo) junto com Stories diários intensificados (que sinalizam que o perfil está ativo). Essa combinação reativa o algoritmo de forma mais rápida do que apenas voltar ao formato anterior.'}
+      ],
+      fonte:'Fonte: iComunicação (recuperação de alcance Instagram 2025), Linkme.bio (estratégias TikTok 2025).'
+    }
+  },
+  {
+    day:26, type:'video',
+    theme:'Reels, TikTok, YouTube Shorts: qual plataforma de vídeo curto vale mais a pena em 2025',
+    sobre:{
+      intro:'Com a proliferação de plataformas de vídeo curto, muita gente fica em dúvida sobre onde concentrar esforços. Ao analisar as três principais plataformas com clareza, você demonstra conhecimento de mercado e ajuda o seu público a tomar decisões mais inteligentes.',
+      paras:[
+        {titulo:'Por que essa pergunta é cada vez mais relevante',texto:'Em 2025, o criador de conteúdo que tenta estar em todas as plataformas ao mesmo tempo raramente consegue manter qualidade e consistência em nenhuma delas. Ao ajudar a fazer uma escolha informada, você entrega um dos serviços mais valiosos que um social media pode oferecer: clareza estratégica.'},
+        {titulo:'TikTok: alcance orgânico imbatível para quem está começando',texto:'O TikTok continua sendo a plataforma com maior alcance orgânico para perfis novos. O algoritmo distribuiu conteúdo para quem não segue o criador de forma muito mais generosa do que as outras plataformas. Para quem está começando e quer ser descoberto, o TikTok é a melhor opção.'},
+        {titulo:'Instagram Reels: melhor para conversão de quem já te conhece',texto:'O Instagram Reels tem alcance orgânico menor que o TikTok, mas tem uma vantagem crucial: o Instagram é um ecossistema mais completo para venda. Link na bio, integração com WhatsApp, loja integrada. Para quem já tem audiência no Instagram, Reels é a ferramenta de conversão mais eficaz.'},
+        {titulo:'YouTube Shorts: melhor para longevidade do conteúdo',texto:'YouTube Shorts é o menos popular para crescimento rápido, mas tem uma vantagem única: os Shorts continuam sendo descobertos por busca meses ou anos depois da publicação. Para conteúdo evergreen (que não envelhece), YouTube Shorts tem a maior longevidade das três plataformas.'},
+        {titulo:'Qual escolher para o seu perfil de social media',texto:'Para um perfil de social media em crescimento, a recomendação é: TikTok como principal (alcance orgânico), Instagram como secundário (conversão e relacionamento). YouTube Shorts pode ser adicionado como terceiro quando a produção estiver bem estabelecida. Começar com duas plataformas com qualidade é muito melhor do que estar em três com qualidade comprometida.'}
+      ],
+      dica:'Esse tema funciona muito bem como comparação visual em carrossel, mas como vídeo você pode usar um tom mais pessoal e contar a sua própria perspectiva sobre quais plataformas você prioriza no trabalho com clientes.'
+    },
+    carrossel:{
+      objetivo:'Mostrar conhecimento de mercado e ajudar o público a tomar decisões estratégicas de plataforma.',
+      slides:[
+        {label:'Capa',text:'TikTok, Reels ou YouTube Shorts: qual vale mais a pena em 2025? (a resposta depende do seu objetivo)',tip:''},
+        {label:'Slide 2 — TikTok',text:'Melhor para: ser descoberto. O TikTok tem o maior alcance orgânico para perfis novos. O algoritmo distribui para quem não segue. Para crescimento rápido, é insuperável.',tip:''},
+        {label:'Slide 3 — Instagram Reels',text:'Melhor para: converter. O Instagram tem loja integrada, link na bio e integração com WhatsApp. Para quem já tem audiência, é o ecossistema mais completo para venda.',tip:''},
+        {label:'Slide 4 — YouTube Shorts',text:'Melhor para: longevidade. Shorts continuam sendo descobertos por busca meses depois da publicação. Para conteúdo que não envelhece, é a melhor opção.',tip:''},
+        {label:'Slide 5 — A recomendação',text:'Para quem está começando: TikTok como principal, Instagram como secundário. YouTube Shorts quando a produção já estiver estabelecida.',tip:''},
+        {label:'Slide 6',text:'Estar em 3 plataformas com qualidade comprometida é muito pior do que estar em 2 com conteúdo excelente. Foco supera presença.',tip:''},
+        {label:'Slide 7 — CTA',text:'Eu ajudo a definir a estratégia certa para cada plataforma. Me chama no direct.',tip:''},
+      ],
+      cta:{texto:'Me chama no direct. Vamos definir quais plataformas fazem mais sentido para o seu negócio.',copy:'"Me chama no direct. Estratégia de plataforma para o seu negócio."'}
+    },
+    video:{
+      objetivo:'Dar uma perspectiva clara e opinativa sobre qual plataforma priorizar.',
+      duracao:'50 a 60 segundos',
+      gancho:{texto:'TikTok, Reels ou YouTube Shorts? Vou te dizer qual escolher em 2025 dependendo do seu objetivo.',dica:'Promessa de resposta direta para uma pergunta que todo mundo tem.'},
+      desenvolvimento:[
+        {bloco:'As três opções (25 seg)',texto:'TikTok: melhor alcance orgânico para quem está começando. Instagram Reels: melhor para converter quem já te conhece. YouTube Shorts: melhor longevidade, conteúdo descoberto meses depois.'},
+        {bloco:'A recomendação (15 seg)',texto:'Para quem está começando: TikTok como principal, Instagram como secundário. Foco em duas plataformas com qualidade é muito melhor do que três com qualidade comprometida.'},
+      ],
+      cta:{texto:'Me chama no direct. Ajudo a definir a estratégia certa para a sua situação.',dica:''},
+      dicas:'Tom opinativo e direto. Esse vídeo funciona melhor quando você se posiciona claramente, não fica em cima do muro.'
+    },
+    legenda:'TikTok, Instagram Reels ou YouTube Shorts?\n\nA resposta depende do seu objetivo.\n\n🎯 TikTok: melhor alcance orgânico para perfis novos. Quer ser descoberto? TikTok é a escolha.\n\n💰 Instagram Reels: melhor para conversão. O ecossistema de venda do Instagram (loja, link na bio, WhatsApp) é mais completo.\n\n⏳ YouTube Shorts: melhor longevidade. Conteúdo continua sendo descoberto meses depois.\n\nPara quem está começando: TikTok principal, Instagram secundário.\n\nEsteja em menos plataformas com mais qualidade. Foco supera presença.\n\nMe chama no direct.',
+    hashtags:['#tiktok','#reels','#youtubeshorts','#videocurto','#socialmedia','#marketingdigital','#estrategiadigital','#crescimentoorganico','#plataformadigital','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Crescimento orgânico para novos criadores',
+      items:[
+        {nivel:'ruim',formato:'Estar em todas as plataformas com qualidade comprometida',icone:'🌐',desc:'Tentar postar em TikTok, Instagram, YouTube Shorts, Kwai e outras plataformas simultaneamente sem equipe e sem orçamento resulta em conteúdo mediano em todos os lugares. O algoritmo prioriza criadores que postam com qualidade e consistência. Diluição de esforço é um dos erros mais comuns e mais custosos.'},
+        {nivel:'bom',formato:'Instagram Reels com estratégia de conversão',icone:'📸',desc:'Para quem já tem audiência no Instagram, Reels com estratégia de conversão (CTA para direct, link na bio, Stories complementares) é uma abordagem eficaz. Mas o alcance orgânico para perfis novos é menor do que no TikTok.'},
+        {nivel:'excelente',formato:'TikTok como principal plataforma de crescimento',icone:'🎵',desc:'Para perfis em crescimento, o TikTok oferece o maior alcance orgânico disponível em 2025. O algoritmo de descoberta distribui conteúdo para não seguidores de forma muito mais generosa do que o Instagram. Para ser encontrado por novas pessoas sem investimento em anúncios, TikTok é insuperável.'}
+      ],
+      fonte:'Fonte: Sebrae-RN (TikTok vs Instagram 2025), HubSpot (vídeos curtos e retenção), Amper (estratégias de plataforma 2024).'
+    }
+  },
+  {
+    day:28, type:'video',
+    theme:'ESSE É RUIM, ESSE É BOM, ESSE É EXCELENTE: o melhor formato para cada objetivo no TikTok e Instagram',
+    sobre:{
+      intro:'Esse é o post mais educativo do calendário. Ao comparar formatos de conteúdo por objetivo de forma clara e direta, você demonstra domínio técnico sobre como cada formato funciona nas plataformas. É um conteúdo muito compartilhável porque resolve de uma vez uma dúvida que a maioria dos criadores tem.',
+      paras:[
+        {titulo:'Por que a escolha de formato importa tanto',texto:'Formato errado para o objetivo certo desperdiça todo o esforço de criação. Um CTA de venda num carrossel muito longo perde a conversão porque o usuário abandona antes do último slide. Um conteúdo educativo em Stories perde o salvamento porque Stories desaparecem em 24 horas. Cada objetivo tem um formato que o serve melhor.'},
+        {titulo:'Para alcance e descoberta',texto:'Ruim: post estático no feed (alcance orgânico muito baixo). Bom: carrossel educativo (gera salvamento e algum alcance). Excelente: vídeo curto com gancho forte no TikTok ou Reels (alcance orgânico máximo, o algoritmo distribui para não seguidores).'},
+        {titulo:'Para autoridade e posicionamento',texto:'Ruim: Stories isolados sem conexão com o feed (vistos rapidamente, esquecidos). Bom: carrossel com conteúdo educativo aprofundado (gera salvamento e autoridade). Excelente: vídeo de opinião direta falando sobre o nicho (personalidade + conhecimento = autoridade máxima).'},
+        {titulo:'Para conversão e venda',texto:'Ruim: post de feed com CTA direto sem construção de contexto (parece anúncio, gera resistência). Bom: vídeo explicando o serviço com caso prático (convence, mas precisa de audiência pré-aquecida). Excelente: Stories com CTA direto para audiência quente (quem vê Stories já te segue, já confia, está mais próximo de comprar).'},
+        {titulo:'Para engajamento e interação',texto:'Ruim: post com frase genérica de motivação (pouco engajamento, pouca lembrança). Bom: carrossel com pergunta no último slide (gera comentários e debate). Excelente: Stories com enquete ou caixinha de perguntas (interação direta, conversa no direct, o formato mais eficaz para criar relacionamento).'}
+      ],
+      dica:'Esse post tem altíssimo potencial de salvamento e compartilhamento porque funciona como guia de referência rápida. Incentive o salvamento desde o início do conteúdo.'
+    },
+    carrossel:{
+      objetivo:'Ensinar a escolha certa de formato por objetivo de forma visual e comparativa.',
+      slides:[
+        {label:'Capa',text:'Esse é ruim. Esse é bom. Esse é excelente. O melhor formato para cada objetivo no TikTok e Instagram.',tip:'Capa que já entrega a proposta. Gera curiosidade sobre qual categoria o seguidor usa.'},
+        {label:'Slide 2 — Objetivo: Alcance',text:'Ruim: foto estática (alcance mínimo). Bom: carrossel educativo (salvamento + alcance médio). Excelente: vídeo curto com gancho forte (maior alcance orgânico disponível).',tip:''},
+        {label:'Slide 3 — Objetivo: Autoridade',text:'Ruim: Stories sem contexto (visto e esquecido). Bom: carrossel aprofundado (salvamento + autoridade). Excelente: vídeo de opinião direto para a câmera (personalidade + conhecimento = confiança).',tip:''},
+        {label:'Slide 4 — Objetivo: Venda',text:'Ruim: post de venda sem contexto (parece anúncio). Bom: vídeo explicando o serviço com caso real. Excelente: Stories com CTA direto para audiência quente (quem vê Stories já confia em você).',tip:''},
+        {label:'Slide 5 — Objetivo: Engajamento',text:'Ruim: frase motivacional genérica. Bom: carrossel com pergunta no último slide. Excelente: Stories com enquete ou caixinha de perguntas (interação direta e conversa no direct).',tip:''},
+        {label:'Slide 6 — Objetivo: Salvamento',text:'Ruim: vídeo sem conteúdo de referência. Bom: vídeo com dados na tela. Excelente: carrossel com listas, fórmulas ou guias práticos (as pessoas salvam o que querem guardar para usar depois).',tip:''},
+        {label:'Slide 7 — CTA',text:'Salva esse post. E se quiser ajuda para escolher o formato certo para cada publicação, me chama no direct.',tip:'Comece o CTA pedindo o salvamento. Esse post merece.'},
+      ],
+      cta:{texto:'Me chama no direct. Eu escolho o formato certo para cada objetivo do seu perfil.',copy:'"Me chama no direct. O formato certo para cada objetivo."'}
+    },
+    video:{
+      objetivo:'Ser uma referência rápida sobre formatos e gerar alto salvamento e compartilhamento.',
+      duracao:'55 a 70 segundos',
+      gancho:{texto:'Você usa o formato errado para o objetivo certo? Isso desperdiça todo o esforço de criação. Vou te mostrar o que funciona para cada objetivo.',dica:'Gancho que instiga medo de estar errando. Muito eficaz.'},
+      desenvolvimento:[
+        {bloco:'Para alcance (15 seg)',texto:'Ruim: foto estática. Bom: carrossel. Excelente: vídeo curto com gancho forte. O algoritmo distribui vídeo para não seguidores de forma muito mais generosa.'},
+        {bloco:'Para venda (15 seg)',texto:'Ruim: post de venda sem contexto. Bom: vídeo com caso prático. Excelente: Stories com CTA para audiência quente. Quem vê Stories já confia em você.'},
+        {bloco:'Para engajamento (15 seg)',texto:'Ruim: frase motivacional genérica. Bom: carrossel com pergunta. Excelente: Stories com caixinha de perguntas. Interação direta que abre conversa no direct.'},
+      ],
+      cta:{texto:'Salva esse vídeo. E se quiser que eu escolha o formato certo para cada publicação do seu perfil, me chama no direct.',dica:'Peça o salvamento antes do CTA de direct. Dois pedidos estratégicos no mesmo CTA.'},
+      dicas:'Vídeo mais rápido e dinâmico. Use o tom de quem está revelando algo importante. Se quiser, pode usar recursos visuais na tela para mostrar os três níveis de cada objetivo.'
+    },
+    legenda:'Você usa o formato certo para cada objetivo?\n\nParece óbvio, mas a maioria dos criadores usa o formato errado e desperdiça todo o esforço.\n\n📣 PARA ALCANCE\n❌ Foto estática\n✓ Carrossel educativo\n✅ Vídeo curto com gancho forte\n\n💰 PARA VENDA\n❌ Post de venda sem contexto\n✓ Vídeo com caso prático\n✅ Stories com CTA direto\n\n💬 PARA ENGAJAMENTO\n❌ Frase motivacional genérica\n✓ Carrossel com pergunta\n✅ Stories com caixinha de perguntas\n\n🔖 PARA SALVAMENTO\n❌ Vídeo sem referência\n✓ Vídeo com dados na tela\n✅ Carrossel com guia prático\n\nSalva esse post e me chama no direct se quiser ajuda para escolher o formato certo.',
+    hashtags:['#formatodeconteudo','#tiktokestrategia','#instagramdicas','#socialmediatips','#marketingdigital','#conteudoestragico','#alcance','#engajamento','#dicasdesocialmedia','#empreendedorismo'],
+    qualidade:{
+      objetivo:'Conteúdo comparativo e educativo de referência',
+      items:[
+        {nivel:'ruim',formato:'Vídeo comparativo sem elementos visuais de apoio',icone:'🎥',desc:'Para um conteúdo comparativo com vários itens (ruim, bom, excelente para múltiplos objetivos), vídeo falado sem nenhum suporte visual é difícil de acompanhar e quase impossível de usar como referência depois. Baixo salvamento para um conteúdo que tem enorme potencial de ser uma referência.'},
+        {nivel:'bom',formato:'Vídeo com texto na tela mostrando os níveis',icone:'📊',desc:'Mostrar os três níveis (ruim, bom, excelente) na tela enquanto fala já melhora muito a compreensão e o salvamento. As pessoas conseguem acompanhar e guardar o vídeo para referência futura.'},
+        {nivel:'excelente',formato:'Carrossel com um objetivo por slide',icone:'📑',desc:'Para conteúdo comparativo com múltiplos objetivos, carrossel com um objetivo por slide é o formato mais eficaz. O usuário pode deslizar no seu ritmo, cada slide é uma unidade completa de informação, e o salvamento é natural porque a pessoa quer ter o guia completo guardado.'}
+      ],
+      fonte:'Fonte: Sebrae-RN (formatos por objetivo 2025), Amper (melhor formato para cada objetivo 2024), Container Criativo (tendências Instagram 2025).'
+    }
+  }
+];
+
+// CALENDÁRIO MAIO 2026 — Dia 1 = sexta-feira
+const WEEKS = [
+  [null,null,null,null,1,2,3],
+  [4,5,6,7,8,9,10],
+  [11,12,13,14,15,16,17],
+  [18,19,20,21,22,23,24],
+  [25,26,27,28,29,30,31]
+];
+const FDS_DAYS = new Set([2,3,9,10,16,17,23,24,30,31]);
+const LS_KEY = 'sm_cal2_maio2026_status';
+
+function loadStatuses(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); }catch(e){ return {}; } }
+function saveStatuses(obj){ try{ localStorage.setItem(LS_KEY, JSON.stringify(obj)); }catch(e){} }
+let STATUSES = loadStatuses();
+let currentDay = null;
+let currentTab = 't';
+
+function getEntry(d){ return CONTENT.find(x=>x.day===d); }
+
+function renderCalendar(){
+  const cal = document.getElementById('calendar');
+  cal.innerHTML = '';
+  WEEKS.forEach(week=>{
+    week.forEach(d=>{
+      const cell = document.createElement('div');
+      if(!d){cell.className='cell empty-cell';cal.appendChild(cell);return;}
+      if(FDS_DAYS.has(d)){
+        cell.className='cell fds-cell';
+        cell.innerHTML=`<div class="cell-num"><span>${d}</span></div><div class="cell-fds-label">Fim de semana</div>`;
+        cal.appendChild(cell);return;
+      }
+      const entry = getEntry(d);
+      const st = STATUSES[d]||'p';
+      cell.className = `cell clickable st-${st}-cell`;
+      let html = `<div class="cell-num"><span>${d}</span><span class="st-dot st-${st}"></span></div>`;
+      if(entry){
+        html += `<span class="badge badge-${entry.type==='video'?'v':'c'}">${entry.type}</span>`;
+        html += `<div class="cell-theme">${entry.theme}</div>`;
+      } else {
+        html += `<div class="cell-empty-label">Sem conteúdo</div>`;
+      }
+      html += `<div class="cell-bar"></div>`;
+      cell.innerHTML = html;
+      if(entry) cell.onclick = ()=>openModal(d);
+      cal.appendChild(cell);
+    });
+  });
+}
+
+const DIAS_SEMANA = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
+
+function openModal(d){
+  currentDay = d;
+  currentTab = 't';
+  const e = getEntry(d);
+  document.getElementById('modal-title').textContent = e.theme;
+  const dow = (d - 1 + 4) % 7;
+  document.getElementById('modal-meta').textContent =
+    `${DIAS_SEMANA[dow]}, ${d} de maio de 2026  ·  Formato: ${e.type==='video'?'Vídeo':'Carrossel'}`;
+  updateStatusBtns();
+  setActiveTab('t');
+  renderSobre(e);
+  renderCarrossel(e);
+  renderVideo(e);
+  renderLegenda(e);
+  renderQualidade(e);
+  document.getElementById('overlay').className='overlay open';
+}
+
+function setActiveTab(t){
+  ['t','c','v','l','q'].forEach(x=>{
+    document.getElementById('tab-'+x).className='tab'+(x===t?' active':'');
+    document.getElementById('pane-'+x).style.display=x===t?'block':'none';
+  });
+}
+function showTab(t){ currentTab=t; setActiveTab(t); }
+
+function renderSobre(e){
+  const s = e.sobre;
+  let html = `<div class="sobre-intro"><p>${s.intro}</p></div>`;
+  s.paras.forEach(p=>{
+    html += `<div class="sobre-para"><div class="sobre-titulo">${p.titulo}</div><p>${p.texto}</p></div>`;
+  });
+  html += `<div class="sobre-dica"><div class="sobre-dica-lbl">Dica de publicação</div><p>${s.dica}</p></div>`;
+  document.getElementById('pane-t').innerHTML = html;
+}
+
+function renderCarrossel(e){
+  const c = e.carrossel;
+  let html = `<div class="sec"><div class="sec-label">Objetivo do carrossel</div><div class="blk"><p>${c.objetivo}</p></div></div>
+  <div class="sec"><div class="sec-label">Roteiro dos slides</div>`;
+  c.slides.forEach(s=>{
+    html += `<div class="slide"><div class="slide-lbl">${s.label}</div><div class="slide-txt">${s.text}</div>${s.tip?`<div class="slide-tip">Dica: ${s.tip}</div>`:''}</div>`;
+  });
+  html += `</div><div class="cta-box"><div class="cta-lbl">CTA do carrossel</div><p>${c.cta.texto}</p><div class="cta-copy">${c.cta.copy}</div></div>`;
+  document.getElementById('pane-c').innerHTML = html;
+}
+
+function renderVideo(e){
+  const v = e.video;
+  let html = `<div class="sec"><div class="sec-label">Objetivo do vídeo</div><div class="blk"><p>${v.objetivo}</p><p class="sub">Duração sugerida: ${v.duracao}</p></div></div>
+  <div class="sec"><div class="sec-label">Gancho — primeiros 3 segundos</div><div class="blk"><p>${v.gancho.texto}</p>${v.gancho.dica?`<p class="sub">${v.gancho.dica}</p>`:''}</div></div>
+  <div class="sec"><div class="sec-label">Desenvolvimento</div>`;
+  v.desenvolvimento.forEach((b,i)=>{
+    html += `<div class="blk"><div class="blk-title"><span class="num">${i+1}</span>${b.bloco}</div><p>${b.texto}</p></div>`;
+  });
+  html += `</div><div class="sec"><div class="sec-label">CTA final</div><div class="blk"><p>${v.cta.texto}</p>${v.cta.dica?`<p class="sub">${v.cta.dica}</p>`:''}</div></div>
+  <div class="tip-box"><p><strong>Dicas de gravação:</strong> ${v.dicas}</p></div>`;
+  document.getElementById('pane-v').innerHTML = html;
+}
+
+function renderLegenda(e){
+  const tags = e.hashtags.map(h=>`<span class="hash-tag">${h}</span>`).join('');
+  const legFormatada = e.legenda.replace(/\n/g,'<br>');
+  let html = `<div class="sec">
+    <div class="sec-label">Legenda pronta para copiar</div>
+    <div class="blk"><p style="white-space:pre-line;line-height:1.8">${legFormatada}</p></div>
+  </div>
+  <div class="hash-box">
+    <div class="hash-lbl">Hashtags sugeridas</div>
+    <div class="hash-tags">${tags}</div>
+  </div>`;
+  document.getElementById('pane-l').innerHTML = html;
+}
+
+function renderQualidade(e){
+  const q = e.qualidade;
+  const nivelLabel = {ruim:'Ruim',bom:'Bom',excelente:'Excelente'};
+  let html = `<p class="qual-intro">Análise baseada em dados de desempenho de formatos no TikTok e Instagram em 2025. Cada objetivo tem um formato que o serve melhor.</p>
+  <div class="qual-objetivo">Objetivo desse conteúdo: ${q.objetivo}</div>`;
+  q.items.forEach(item=>{
+    html += `<div class="qual-card ${item.nivel}">
+      <div class="qual-header">
+        <span class="qual-icon">${item.icone}</span>
+        <span class="qual-badge ${item.nivel}">${nivelLabel[item.nivel]}</span>
+        <span class="qual-formato">${item.formato}</span>
+      </div>
+      <p class="qual-desc">${item.desc}</p>
+    </div>`;
+  });
+  html += `<p class="qual-fonte">${q.fonte}</p>`;
+  document.getElementById('pane-q').innerHTML = html;
+}
+
+function setStatus(s){
+  STATUSES[currentDay] = s;
+  saveStatuses(STATUSES);
+  updateStatusBtns();
+  renderCalendar();
+}
+
+function updateStatusBtns(){
+  const s = STATUSES[currentDay]||'p';
+  document.getElementById('sbtn-p').className='sbtn'+(s==='p'?' sp':'');
+  document.getElementById('sbtn-s').className='sbtn'+(s==='s'?' ss':'');
+  document.getElementById('sbtn-d').className='sbtn'+(s==='d'?' sd':'');
+  document.getElementById('sbtn-n').className='sbtn'+(s==='n'?' sn':'');
+}
+
+function closeModal(){
+  document.getElementById('overlay').className='overlay';
+  currentDay=null;
+}
+
+document.getElementById('overlay').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+
+renderCalendar();
+</script>
+</body>
+</html>
