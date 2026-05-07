@@ -1119,9 +1119,37 @@ const WEEKS = [
 const FDS_DAYS = new Set([2,3,9,10,16,17,23,24,30,31]);
 const LS_KEY = 'sm_cal2_maio2026_status';
 
-function loadStatuses(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); }catch(e){ return {}; } }
-function saveStatuses(obj){ try{ localStorage.setItem(LS_KEY, JSON.stringify(obj)); }catch(e){} }
-let STATUSES = loadStatuses();
+async function loadStatuses(){
+
+  try{
+
+    return await loadStatusesOnline();
+
+  }catch(e){
+
+    return {};
+
+  }
+
+}
+async function saveStatuses(obj){
+
+  try{
+
+    await saveStatusesOnline(obj);
+
+  }catch(e){}
+
+}
+let STATUSES = {};
+
+loadStatuses().then(data => {
+
+  STATUSES = data;
+
+  render();
+
+});
 let currentDay = null;
 let currentTab = 't';
 
@@ -1277,6 +1305,61 @@ document.getElementById('overlay').addEventListener('click',function(e){
 });
 
 renderCalendar();
+</script>
+  <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDsNGKE1mMAc8-6g-jUZG_2QAf9uioyqx0",
+  authDomain: "calend-ca9e0.firebaseapp.com",
+  projectId: "calend-ca9e0",
+  storageBucket: "calend-ca9e0.firebasestorage.app",
+  messagingSenderId: "1077010914412",
+  appId: "1:1077010914412:web:5d50af6702ad82b7458c49"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+// SALVAR ONLINE
+window.saveStatusesOnline = async function(obj){
+
+  await setDoc(
+    doc(db, "calendario", "status"),
+    obj
+  );
+
+  console.log("SALVO ONLINE");
+
+};
+
+// CARREGAR ONLINE
+window.loadStatusesOnline = async function(){
+
+  const documento =
+    await getDoc(
+      doc(db, "calendario", "status")
+    );
+
+  if(documento.exists()){
+
+    return documento.data();
+
+  }
+
+  return {};
+
+};
+
 </script>
 </body>
 </html>
